@@ -79,7 +79,7 @@ class modelLaporan {
         });
     }
 
-
+    
     // Mendapatkan data laporan berdasarkan ID
     static async getLaporanById(id) {
         return new Promise((resolve, reject) => {
@@ -204,7 +204,7 @@ WHERE
                 LEFT JOIN 
                     sasaran s ON p.id_sasaran = s.id_sasaran
                 WHERE 
-                    lb.bulan IN (?) 
+                    1
             `;
 
             // Mapping triwulan (quarter) to months
@@ -222,7 +222,7 @@ WHERE
                 return reject(new Error('Invalid triwulan'));
             }
 
-            connection.query(query, [months], (err, results) => {
+            connection.query(query, (err, results) => {
                 if (err) {
                     reject(err);
                 } else {

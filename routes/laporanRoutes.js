@@ -37,6 +37,17 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
+router.get('/getSubKegiatan/:id_kegiatan', async (req, res) => {
+    const { id_kegiatan } = req.params;
+    try {
+        const subKegiatanList = await modelKegiatan.getSubKegiatanByKegiatan(id_kegiatan);
+        res.json(subKegiatanList);
+    } catch (error) {
+        console.error("Error fetching sub kegiatan:", error);
+        res.status(500).json({ message: "Error fetching sub kegiatan", error });
+    }
+});
+
 router.get('/triwulan', async (req, res) => {
 
     try {

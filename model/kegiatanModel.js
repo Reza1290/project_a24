@@ -36,6 +36,25 @@ class modelKegiatan {
     });
   }
 
+  static async getSubKegiatanByKegiatan(id_kegiatan) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM sub_kegiatan WHERE id_kegiatan = ?`, 
+        [id_kegiatan], 
+        function (err, rows) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  }
+  
+
+
+
   // Mendapatkan data kegiatan berdasarkan ID
   static async getKegiatanById(id) {
     return new Promise((resolve, reject) => {

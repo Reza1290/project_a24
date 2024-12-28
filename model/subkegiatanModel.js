@@ -6,10 +6,10 @@ class modelSubKegiatan {
     return new Promise((resolve, reject) => {
       connection.query(
         `INSERT INTO sub_kegiatan 
-        ( nama_sub_kegiatan, indikator_sub_kegiatan, target, satuan_sub_kegiatan, anggaran_sub_kegiatan) 
-        VALUES ( ?, ?, ?, ?, ?)`,
+        (id_kegiatan, nama_sub_kegiatan, indikator_sub_kegiatan, target, satuan_sub_kegiatan, anggaran_sub_kegiatan) 
+        VALUES (?, ?, ?, ?, ?, ?)`,
         [
-          // data.id_kegiatan,
+          data.id_kegiatan,
           data.nama_sub_kegiatan,
           data.indikator_sub_kegiatan,
           data.target,

@@ -63,9 +63,19 @@
                                                 </select>
                                             </div>
                                         </div>
-
-
                                         <div class="form-group row">
+                                            <label for="id_sub_kegiatan"
+                                                class="col-md-3 col-form-label text-right">Pilih Sub Kegiatan</label>
+                                            <div class="col-md-6">
+                                                <select id="id_sub_kegiatan" name="id_sub_kegiatan" class="form-control"
+                                                    required>
+                                                    <option value="">Pilih Sub Kegiatan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- <div class="form-group row">
                                             <label for="id_sub_kegiatan"
                                                 class="col-md-3 col-form-label text-right">Pilih
                                                 Sub Kegiatan</label>
@@ -85,7 +95,7 @@
                                                                     <% } %>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-group row">
                                             <label for="realisasi_kinerja"
@@ -349,5 +359,29 @@
             }
 
 
+        </script>
+        <script>
+            document.getElementById('id_kegiatan').addEventListener('change', function () {
+                const idKegiatan = this.value;
+
+                // Clear existing sub kegiatan options
+                const subKegiatanDropdown = document.getElementById('id_sub_kegiatan');
+                subKegiatanDropdown.innerHTML = '<option value="">Pilih Sub Kegiatan</option>';
+
+                if (idKegiatan) {
+                    // Fetch sub kegiatan based on selected kegiatan
+                    fetch(`/laporan/getSubKegiatan/${idKegiatan}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(subKegiatan => {
+                                const option = document.createElement('option');
+                                option.value = subKegiatan.id_sub_kegiatan;
+                                option.textContent = subKegiatan.nama_sub_kegiatan;
+                                subKegiatanDropdown.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching sub kegiatan:', error));
+                }
+            });
         </script>
         <%- include('../partials/footer__') %>
