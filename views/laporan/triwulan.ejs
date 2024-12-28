@@ -1,0 +1,46 @@
+<%- include('../partials/header__') %>
+    <%- include('../partials/sidebar__') %>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Laporan Triwulan</h3>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Daftar Laporan Triwulan</h2>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <!-- Filter Section -->
+                            <div class="x_content">
+                                <form action="/laporan/triwulan/download" method="get" >
+                                    <label for="triwulan">Pilih Triwulan:</label>
+                                    <select id="triwulan" name="triwulan" class="border btn btn-large">
+                                        <option value="1">Triwulan 1 (Jan - Mar)</option>
+                                        <option value="2">Triwulan 2 (Apr - Jun)</option>
+                                        <option value="3">Triwulan 3 (Jul - Sep)</option>
+                                        <option value="4">Triwulan 4 (Okt - Des)</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-large">Download</button>
+                                </form>
+
+
+
+                                <!-- Table Section -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/footer__') %>

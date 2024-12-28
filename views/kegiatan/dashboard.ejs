@@ -1,0 +1,238 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Manajemen Kegiatan</h3>
+      </div>
+
+      <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!-- Form Input Kegiatan -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Input Kegiatan <small>Masukkan data kegiatan di bawah ini</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <form action="/kegiatan/tambah" method="POST" class="form-horizontal form-label-left">
+              <div class="form-group row">
+                <label for="id_program" class="col-md-3 col-form-label text-right">Program</label>
+                <div class="col-md-6">
+                  <select id="id_program" name="id_program" class="form-control" required>
+                    <option value="">Pilih Program</option>
+                    <% if (program && program.length > 0) { %>
+                      <% program.forEach((item) => { %>
+                        <option value="<%= item.id_program %>"><%= item.nama_program %></option>
+                      <% }); %>
+                    <% } else { %>
+                      <option value="">Tidak ada program tersedia</option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="nama_kegiatan" class="col-md-3 col-form-label text-right">Nama Kegiatan</label>
+                <div class="col-md-6">
+                  <input 
+                    type="text" 
+                    id="nama_kegiatan" 
+                    name="nama_kegiatan" 
+                    required="required" 
+                    class="form-control" 
+                    autocomplete="off">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="indikator_kegiatan" class="col-md-3 col-form-label text-right">Indikator Kegiatan</label>
+                <div class="col-md-6">
+                  <textarea 
+                    id="indikator_kegiatan" 
+                    name="indikator_kegiatan" 
+                    required="required" 
+                    class="form-control" 
+                    rows="4" 
+                    autocomplete="off"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="target" class="col-md-3 col-form-label text-right">Target</label>
+                <div class="col-md-6">
+                  <input 
+                    type="number" 
+                    id="target" 
+                    name="target" 
+                    required="required" 
+                    class="form-control" 
+                    autocomplete="off">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="satuan_kegiatan" class="col-md-3 col-form-label text-right">Satuan Kegiatan</label>
+                <div class="col-md-6">
+                  <select id="satuan_kegiatan" name="satuan_kegiatan" class="form-control" required>
+                    <option value="">Pilih Satuan Kegiatan</option>
+                    <option value="Unit">Unit</option>
+                    <option value="Liter">Liter</option>
+                    <option value="Persentase">Persentase</option>
+                    <option value="Dokumen">Dokumen</option>
+                    <option value="Berita Acara">Berita Acara</option>
+                    <option value="Masukan">Masukan</option>
+                    <option value="Paket">Paket</option>
+                    <option value="Orang">Orang</option>
+                    <option value="Jam">Jam</option>
+                    <option value="Bulan">Bulan</option>
+                    <option value="Tahun">Tahun</option>
+                    <option value="Lembar">Lembar</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 offset-md-3">
+                  <button class="btn btn-danger" type="reset">Reset</button>
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Kegiatan -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Data Kegiatan <small>Data kegiatan yang telah diinput</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Program</th>
+                  <th>Nama Kegiatan</th>
+                  <th>Indikator Kegiatan</th>
+                  <th>Target</th>
+                  <th>Satuan Kegiatan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% kegiatan.forEach((item, index) => { %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td><%= item.nama_program %></td>
+                    <td><%= item.nama_kegiatan %></td>
+                    <td><%= item.indikator_kegiatan %></td>
+                    <td><%= item.target %></td>
+                    <td><%= item.satuan_kegiatan %></td>
+                    <td>
+                      <a href="#" data-toggle="modal" data-target="#editKegiatanModal" onclick="editKegiatan(<%= item.id_kegiatan %>, '<%= item.nama_kegiatan %>', '<%= item.indikator_kegiatan %>', <%= item.target %>, '<%= item.satuan_kegiatan %>')">Edit</a> | 
+                      <a href="/kegiatan/delete/<%= item.id_kegiatan %>" onclick="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')">Delete</a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+
+            <!-- Modal Edit Kegiatan -->
+            <div class="modal fade" id="editKegiatanModal" tabindex="-1" role="dialog" aria-labelledby="editKegiatanModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editKegiatanModalLabel">Edit Kegiatan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editKegiatanForm" action="" method="POST">
+                      <div class="form-group">
+                        <label for="modal_nama_kegiatan">Nama Kegiatan</label>
+                        <input type="text" class="form-control" id="modal_nama_kegiatan" name="nama_kegiatan" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_indikator_kegiatan">Indikator Kegiatan</label>
+                        <textarea class="form-control" id="modal_indikator_kegiatan" name="indikator_kegiatan" required rows="3"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_target">Target</label>
+                        <input type="number" class="form-control" id="modal_target" name="target" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_satuan_kegiatan">Satuan Kegiatan</label>
+                        <select class="form-control" id="modal_satuan_kegiatan" name="satuan_kegiatan" required>
+                          <option value="Unit">Unit</option>
+                          <option value="Liter">Liter</option>
+                          <option value="Persentase">Persentase</option>
+                          <option value="Dokumen">Dokumen</option>
+                          <option value="Berita Acara">Berita Acara</option>
+                          <option value="Masukan">Masukan</option>
+                          <option value="Paket">Paket</option>
+                          <option value="Orang">Orang</option>
+                          <option value="Jam">Jam</option>
+                          <option value="Bulan">Bulan</option>
+                          <option value="Tahun">Tahun</option>
+                          <option value="Lembar">Lembar</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-success">Update</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function editKegiatan(id, nama_kegiatan, indikator_kegiatan, target, satuan_kegiatan) {
+    document.getElementById("modal_nama_kegiatan").value = nama_kegiatan;
+    document.getElementById("modal_indikator_kegiatan").value = indikator_kegiatan;
+    document.getElementById("modal_target").value = target;
+    document.getElementById("modal_satuan_kegiatan").value = satuan_kegiatan;
+
+    var formAction = '/kegiatan/edit/' + id;
+    document.querySelector("#editKegiatanForm").action = formAction;
+  }
+</script>
+
+<%- include('../partials/footer__') %>

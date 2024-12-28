@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BAPPEDA LOGIN | MANAJEMEN KINERJA DAN ANGGARAN BAPPEDA</title>
+
+    <!-- Bootstrap -->
+    <link href="/gentelella-master/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/gentelella-master/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/gentelella-master/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/gentelella-master/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/gentelella-master/build/css/custom.min.css" rel="stylesheet">
+
+    <style>
+      .password-container {
+        position: relative;
+      }
+      .toggle-password {
+        cursor: pointer;
+        font-size: 1.2em;
+        color: #000; /* Icon color abu-abu */
+        position: absolute;
+        right: 10px;
+        top: 12px;
+      }
+
+      .btn-custom {
+        background-color: #00923f; /* Warna abu-abu untuk tombol */
+        opacity: 50%;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 16px;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer; /* Menambahkan cursor pointer saat hover */
+        }
+
+        .btn-custom:hover {
+        background-color: #00923f;
+        opacity: 100%; /* Efek hover dengan warna yang lebih gelap */
+        color: #fff;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            position: fixed;
+            top: -100px;
+            left: -10px;
+            width: 100%;
+            z-index: -1;
+            }
+
+              /* Menyesuaikan logo untuk layar besar */
+            .logo-bappeda {
+                width: 250px; /* Sesuaikan ukuran logo */
+                height: auto;
+            }
+
+            /* Menyesuaikan logo untuk perangkat dengan layar lebih kecil */
+            @media (max-width: 768px) {
+                .logo-bappeda {
+                margin-top: 20px;
+                width: 200px; /* Ukuran logo lebih kecil untuk layar ponsel */
+                }
+            }
+
+            @media (max-width: 480px) {
+                .logo-bappeda {
+                margin-top: 20px;
+                width: 150px; /* Ukuran logo lebih kecil untuk layar ponsel yang lebih kecil */
+                }
+            }
+
+    </style>
+  </head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="navbar">
+        <img src="/images/LOGO.png" alt="Bappeda Logo" class="logo-bappeda">
+      </div>      
+
+      <div class="login_wrapper" style="margin-top: 100px;">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form id="loginForm" action="/login" method="POST">
+              <h1>Login</h1>
+              <div>
+                <input type="text" id="username_superadmin" name="username" class="form-control" autocomplete="off" placeholder="Username" required="" />
+              </div>
+              <div class="password-container">
+                <input type="password" id="loginPassword" name="password" class="form-control" autocomplete="off" placeholder="Password" required="" />
+                <i class="fa fa-eye toggle-password" onclick="togglePassword('loginPassword')"></i>
+              </div>
+                <div>
+                    <button type="submit" class="btn btn-custom">Klik untuk masuk</button>
+                  </div>
+
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">Manajemen Kinerja dan Anggaran Bappeda Kota Malang</p>
+
+                <div class="clearfix"></div>
+                <br />
+
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <script>
+            window.onload = function() {
+              // Set input password menjadi 'password' (tersembunyi) saat halaman pertama kali dimuat
+              const passwordField = document.getElementById('loginPassword');
+              const toggleButton = passwordField.nextElementSibling;
+          
+              // Set default mata tertutup
+              passwordField.setAttribute("type", "password"); // Password tersembunyi saat halaman dimuat
+              toggleButton.classList.add("fa-eye-slash");  // Ikon mata tertutup saat halaman dimuat
+            };
+          
+            function togglePassword(inputId) {
+              const passwordField = document.getElementById(inputId);
+              const toggleButton = passwordField.nextElementSibling;
+          
+              // Toggle tipe input antara 'password' (tersembunyi) dan 'text' (terlihat)
+              const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+              passwordField.setAttribute("type", type);
+          
+              // Toggle ikon mata
+              if (passwordField.getAttribute("type") === "text") {
+                toggleButton.classList.remove("fa-eye-slash");
+                toggleButton.classList.add("fa-eye");
+              } else {
+                toggleButton.classList.remove("fa-eye");
+                toggleButton.classList.add("fa-eye-slash");
+              }
+            }
+
+          </script>
+          
+        
+  </body>
+</html>

@@ -1,0 +1,297 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<style>
+#drop-zone {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Supaya gambar tidak keluar kotak */
+    position: relative;
+    background-color: #f9f9f9;
+    cursor: pointer; /* Menambah cursor pointer saat area drop zone diklik */
+}
+
+#drop-zone i {
+    font-size: 30px;
+    color: #ccc;
+    position: absolute; /* Agar ikon tetap di atas gambar */
+}
+
+#preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar memenuhi area kotak tanpa distorsi */
+    display: block;
+}
+
+
+/* Styling untuk select input */
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px; /* Menambahkan radius untuk sudut yang lebih halus */
+    border: 1px solid #ddd; /* Batas abu-abu yang halus */
+    background-color: #f9f9f9; /* Latar belakang yang lebih lembut */
+    font-size: 16px;
+    transition: all 0.3s ease; /* Efek transisi saat interaksi */
+}
+
+/* Efek focus pada input select */
+.form-select:focus {
+    border-color: #66afe9; /* Warna biru saat focus */
+    outline: none; /* Menghilangkan outline default */
+    background-color: #fff; /* Mengubah background jadi putih saat focus */
+}
+
+/* Menambahkan efek ketika hovering */
+.form-select:hover {
+    border-color: #ccc; /* Ganti warna border saat hover */
+    background-color: #f1f1f1; /* Ganti background saat hover */
+}
+
+/* Styling untuk label */
+.col-form-label {
+    font-weight: 500; /* Menebalkan label agar lebih terlihat */
+}
+
+/* Menambahkan margin untuk jarak antar input */
+.form-group {
+    margin-bottom: 1.5rem; /* Memberikan jarak antar elemen form */
+}
+
+/* Styling untuk kotak dua kolom */
+.form-group.double-column {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-group.double-column .col-md-6 {
+    width: 48%;
+}
+
+.data-box {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Layout untuk data dalam dua kolom */
+.form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Membagi menjadi dua kolom */
+    gap: 20px; /* Jarak antar elemen */
+}
+
+/* Styling untuk setiap input */
+.form-control {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Efek focus */
+.form-control:focus {
+    border-color: #66afe9;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Styling label */
+.col-form-label {
+    font-weight: 500;
+}
+
+/* Tombol Minimalis */
+.btn-minimal {
+    padding: 8px 16px; /* Ukuran kecil tapi tetap nyaman */
+    font-size: 14px;   /* Font yang proporsional */
+    font-weight: 500;  /* Sedikit bold */
+    border: none;      /* Tanpa border untuk kesan modern */
+    border-radius: 5px; /* Sudut tumpul ringan */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animasi halus */
+}
+
+/* Warna Dasar Tombol */
+.btn-danger {
+    background-color: #f44336; /* Merah elegan */
+    color: white;
+}
+
+.btn-success {
+    background-color: #4caf50; /* Hijau elegan */
+    color: white;
+}
+
+/* Hover Efek */
+.btn-danger:hover {
+    background-color: #d32f2f; /* Merah lebih gelap */
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.2); /* Bayangan lembut */
+}
+
+.btn-success:hover {
+    background-color: #388e3c; /* Hijau lebih gelap */
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2); /* Bayangan lembut */
+}
+
+/* Fokus Efek */
+.btn-minimal:focus {
+    outline: 2px solid #ddd; /* Fokus minimal */
+    outline-offset: 2px;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .btn-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Jarak antar tombol */
+    }
+}
+
+/* Styling untuk tombol Lihat Data di sebelah kanan */
+.x_title {
+    display: flex;
+    justify-content: space-between; /* Membuat ruang antara elemen kiri dan kanan */
+    align-items: center; /* Vertikal align agar elemen rata tengah */
+}
+
+.btn-wrapper {
+    margin-left: auto; /* Memastikan tombol berada di sebelah kanan */
+}
+
+.btn-wrapper-lihatdata {
+    position: absolute;
+    right: 30px; /* Tombol akan terletak di ujung kanan */
+    top: 16%; /* Menempatkan tombol di tengah vertikal */
+    transform: translateY(-50%); /* Untuk menyeimbangkan posisi tengah vertikal */
+}
+
+.btn-info {
+    background-color: #17a2b8; /* Biru muda */
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover efek untuk tombol Lihat Data */
+.btn-info:hover {
+    background-color: #138496; /* Biru lebih gelap saat hover */
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.2); /* Shadow lembut */
+}
+
+.btn-info i {
+    margin-right: 8px; /* Memberikan jarak antara ikon dan tulisan */
+}
+
+
+/* Menjaga form-group agar tetap responsif pada layar kecil */
+@media (max-width: 768px) {
+    .form-group.double-column {
+        flex-direction: column;
+    }
+
+    .form-group.double-column .col-md-6 {
+        width: 100%;
+    }
+}
+</style>
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Manajemen Data Kepala Bidang</h3>
+        </div>
+        <div class="btn-wrapper-lihatdata">
+            <button class="btn-minimal btn-info" onclick="window.location.href='/adminkabid/hasilinput'">
+                <i class="fa fa-folder-open"></i> Lihat Data
+            </button>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Input Kabid <small>Masukkan data masing-masing dari kabid</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <!-- Smart Wizard -->
+                <p style="color: red;">*Pastikan semua data yang Anda masukkan sudah benar dan lengkap sebelum menyimpannya</p>
+                <div  class="form_wizard wizard_verticle">
+
+                    <!-- Step 1 -->
+                    <div id="step-1">
+                        <form action="/adminkabid/edit/<%= admin.id_adminkabid %>" method="POST" enctype="multipart/form-data" id="form-step-1" class="form-horizontal form-label-left">
+                            <label for="nama_adminkabid">Nama Admin:</label>
+                            <input type="text" name="nama_adminkabid" value="<%= admin.nama_adminkabid %>" required><br>
+                        
+                            <label for="nip_adminkabid">NIP Admin:</label>
+                            <input type="text" name="nip_adminkabid" value="<%= admin.nip_adminkabid %>" required><br>
+                        
+                            <label for="jabatan_adminkabid">Jabatan Admin:</label>
+                            <input type="text" name="jabatan_adminkabid" value="<%= admin.jabatan_adminkabid %>" required><br>
+                        
+                            <label for="alamat_adminkabid">Alamat Admin:</label>
+                            <input type="text" name="alamat_adminkabid" value="<%= admin.alamat_adminkabid %>" required><br>
+                        
+                            <label for="no_telp_adminkabid">No. Telp Admin:</label>
+                            <input type="text" name="no_telp_adminkabid" value="<%= admin.no_telp_adminkabid %>" required pattern="\d{10,15}">
+                        
+                            <label for="email_adminkabid">Email Admin:</label>
+                            <input type="email" name="email_adminkabid" value="<%= admin.email_adminkabid %>" required><br>
+                        
+                            <label for="username_adminkabid">Username Admin:</label>
+                            <input type="text" name="username_adminkabid" value="<%= admin.username_adminkabid %>" required><br>
+                        
+                            <label for="password_adminkabid">Password (kosongkan jika tidak diubah):</label>
+                            <input type="password" name="password_adminkabid"><br>
+                        
+                            <label for="foto_profil_adminkabid">Foto Profil:</label>
+                            <input type="file" name="foto_profil_adminkabid" accept="image/*">
+                        
+                            <label for="bidang_id">Bidang:</label>
+                            <select name="bidang_id" required>
+                              <% bidang.forEach(function(bidang) { %>
+                                <option value="<%= bidang.id_bidang %>" <%= bidang.id_bidang === admin.bidang_id ? 'selected' : '' %>><%= bidang.nama_bidang %></option>
+                              <% }) %>
+                            </select><br>
+                        
+                            <button type="submit">Update Admin</button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Tambahkan SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<%- include('../partials/footer__') %>

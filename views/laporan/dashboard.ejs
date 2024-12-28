@@ -1,0 +1,353 @@
+<%- include('../partials/header__') %>
+    <%- include('../partials/sidebar__') %>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Laporan Bulanan</h3>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <% if (user.user_type=='user' ){ %>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Form Input Laporan Bulanan <small>Masukkan data laporan di bawah ini</small>
+                                    </h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="x_content">
+                                    <form action="/laporan/tambah" method="POST"
+                                        class="form-horizontal form-label-left">
+                                        <div class="form-group row">
+                                            <label for="bulan" class="col-md-3 col-form-label text-right">Pilih
+                                                Bulan</label>
+                                            <div class="col-md-6">
+                                                <select id="bulan" name="bulan" class="form-control" required>
+                                                    <option value="">Pilih Bulan</option>
+                                                    <% ['Januari', 'Februari' , 'Maret' , 'April' , 'Mei' , 'Juni'
+                                                        , 'Juli' , 'Agustus' , 'September' , 'Oktober' , 'November'
+                                                        , 'Desember' ].forEach((bulan)=> { %>
+                                                        <option value="<%= bulan %>">
+                                                            <%= bulan %>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="id_kegiatan" class="col-md-3 col-form-label text-right">Pilih
+                                                Kegiatan</label>
+                                            <div class="col-md-6">
+                                                <select id="id_kegiatan" name="id_kegiatan" class="form-control"
+                                                    required>
+                                                    <option value="">Pilih Kegiatan</option>
+                                                    <% if (kegiatan && kegiatan.length> 0) { %>
+                                                        <% kegiatan.forEach((item)=> { %>
+                                                            <option value="<%= item.id_kegiatan %>">
+                                                                <%= item.nama_kegiatan %>
+                                                            </option>
+                                                            <% }); %>
+                                                                <% } else { %>
+                                                                    <option value="">Tidak ada kegiatan tersedia
+                                                                    </option>
+                                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label for="id_sub_kegiatan"
+                                                class="col-md-3 col-form-label text-right">Pilih
+                                                Sub Kegiatan</label>
+                                            <div class="col-md-6">
+                                                <select id="id_sub_kegiatan" name="id_sub_kegiatan" class="form-control"
+                                                    required>
+                                                    <option value="">Pilih Sub Kegiatan</option>
+                                                    <% if (sub_kegiatan && sub_kegiatan.length> 0) { %>
+                                                        <% sub_kegiatan.forEach((item)=> { %>
+                                                            <option value="<%= item.id_sub_kegiatan %>">
+                                                                <%= item.nama_sub_kegiatan %>
+                                                            </option>
+                                                            <% }); %>
+                                                                <% } else { %>
+                                                                    <option value="">Tidak ada sub kegiatan tersedia
+                                                                    </option>
+                                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="realisasi_kinerja"
+                                                class="col-md-3 col-form-label text-right">Realisasi Kinerja</label>
+                                            <div class="col-md-3">
+                                                <input type="number" id="realisasi_kinerja" name="realisasi_kinerja"
+                                                    class="form-control" required>
+                                            </div>
+
+                                            <label for="satuan_realisasi_kinerja"
+                                                class="col-md-1 col-form-label text-right">Satuan</label>
+                                            <div class="col-md-3">
+                                                <select id="satuan_realisasi_kinerja" name="satuan_realisasi_kinerja"
+                                                    class="form-control" required>
+                                                    <option value="">Pilih Satuan</option>
+                                                    <% ['Unit', 'Liter' , 'Persentase' , 'Dokumen' , 'Berita Acara'
+                                                        , 'Masukan' , 'Paket' , 'Orang' , 'Jam' , 'Bulan' , 'Tahun'
+                                                        , 'Lembar' ].forEach((satuan)=> { %>
+                                                        <option value="<%= satuan %>">
+                                                            <%= satuan %>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="realisasi_anggaran"
+                                                class="col-md-3 col-form-label text-right">Realisasi Anggaran</label>
+                                            <div class="col-md-6">
+                                                <input type="number" id="realisasi_anggaran" name="realisasi_anggaran"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="permasalahan"
+                                                class="col-md-3 col-form-label text-right">Permasalahan</label>
+                                            <div class="col-md-6">
+                                                <textarea id="permasalahan" name="permasalahan" class="form-control"
+                                                    rows="4"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="langkah_kerja"
+                                                class="col-md-3 col-form-label text-right">Langkah
+                                                Kerja</label>
+                                            <div class="col-md-6">
+                                                <textarea id="langkah_kerja" name="langkah_kerja" class="form-control"
+                                                    rows="3" required></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="output"
+                                                class="col-md-3 col-form-label text-right">Output</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="output" name="output" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="waktu" class="col-md-3 col-form-label text-right">Waktu</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="waktu" name="waktu" class="form-control"
+                                                    required>
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-6 offset-md-3">
+                                                <button class="btn btn-danger" type="reset">Reset</button>
+                                                <button type="submit" class="btn btn-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Daftar Laporan Bulanan</h2>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="x_content">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Bulan</th>
+                                                    <th>Kegiatan</th>
+                                                    <th>Realisasi Kinerja</th>
+                                                    <th>Realisasi Anggaran</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% laporan.forEach((laporan, index)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= index + 1 %>
+                                                        </td>
+                                                        <td>
+                                                            <%= laporan.bulan %>
+                                                        </td>
+                                                        <td>
+                                                            <%= laporan.nama_kegiatan || 'N/A' %>
+                                                        </td>
+                                                        <td>
+                                                            <%= laporan.realisasi_kinerja %>
+                                                                <%= laporan.satuan_realisasi_kinerja %>
+                                                        </td>
+                                                        <td>Rp <%= laporan.realisasi_anggaran.toLocaleString('id-ID') %>
+                                                        </td>
+                                                        <td>
+
+                                                            <% if(user.user_type=='admin_kabid' ) { %>
+                                                                <form action="/laporan/change-status" method="post">
+                                                                    <input name="id_laporan_bulanan"
+                                                                        value="<%= laporan.id_laporan_bulanan %>"
+                                                                        style="display: none;">
+                                                                    <select id="status-dropdown" name="status"
+                                                                        class="btn btn-sm btn-primary">
+                                                                        <option value="PENDING"
+                                                                            <%=laporan.status==="PENDING" ? "selected"
+                                                                            : "" %> >PENDING</option>
+                                                                        <option value="DITOLAK"
+                                                                            <%=laporan.status==="DITOLAK" ? "selected"
+                                                                            : "" %>>DITOLAK</option>
+                                                                        <option value="DITERIMA"
+                                                                            <%=laporan.status==="DITERIMA" ? "selected"
+                                                                            : "" %>>DITERIMA</option>
+
+                                                                    </select>
+                                                                    <button id="change-status-btn"
+                                                                        class="btn btn-sm btn-danger">Change
+                                                                        Status</button>
+                                                                </form>
+                                                                <% } else { %>
+                                                                    <%= laporan.status==="DITERIMA" ? 'DITERIMA' :
+                                                                        laporan.status==="DITOLAK" ? 'DITOLAK'
+                                                                        : 'PENDING' %>
+
+                                                                        <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-info btn-sm"
+                                                                onclick="showCommentModal('<%= laporan.id_laporan_bulanan %>', '<%= user.userId %>','<%= user.user_type %>')">Lihat
+                                                                Komentar</button>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for Comments -->
+                        <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+                            aria-labelledby="commentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="commentModalLabel">Komentar Laporan</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p id="commentContent">Loading...</p>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <div id="komen"></div>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+            </div>
+        </div>
+        <script>
+
+
+
+            function showCommentModal(id_laporan, id_user, user_type) {
+                const commentContent = document.getElementById('commentContent');
+                const komen = document.getElementById('komen')
+                commentContent.innerHTML = "<p>Loading...</p>";
+
+                fetch(`/laporan/komentar/${id_laporan}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch comments');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+
+                        if (user_type == 'admin_kabid') {
+                            komen.innerHTML = `
+                            <div id="admin-comment-form">
+                                <h3>Add Comment</h3>
+                                <form id="add-comment-form" action="/laporan/komentar" method="post">
+                                    <textarea id="comment" name="komentar" required></textarea>
+                                    <input name="id_laporan_bulanan" value="${id_laporan}" style="display:none; visibility: hidden">
+                                    <input name="id_user" value="${id_user}" style="display:none; visibility: hidden">
+                                    
+                                    <button class="btn btn-primary" type="submit">Add Comment</button>
+                                </form>
+                            </div>
+                            `
+                        } else {
+                            komen.innerHTML = ``
+                        }
+
+                        if (data && data.length > 0) {
+                            const commentsHtml = data
+                                .map(
+                                    (comment) => `
+                                    <div class="comment">
+                                        <p><strong>User ID:</strong> ${comment.nama_user}</p>
+                                        <p>${comment.komentar}</p>
+                                        <small class="text-muted">Timestamp: ${new Date(comment.timestamp).toLocaleString()}</small>
+                                        ${id_user == comment.id_user ? `
+                                        <form action="/laporan/hapus-komentar" method="post">
+                                            <input name="id_user" value ="${id_user}" style="display:none">                                            
+                                            <input name="id_komentar_laporan" value ="${comment.id_komentar_laporan}" style="display:none">                                            
+                                            <button class="btn btn-xs btn-danger">hapus</button></form>
+                                            <hr>` : ``
+                                        }
+                                    </div>
+                                    `
+                                )
+                                .join('');
+                            commentContent.innerHTML = commentsHtml;
+                        } else {
+                            commentContent.innerHTML = '<p>No comments available for this report.</p>';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching comments:', error);
+                        commentContent.innerHTML = '<p>Error loading comments. Please try again later.</p>';
+                    });
+
+                // Show the modal
+                $('#commentModal').modal('show');
+            }
+
+
+        </script>
+        <%- include('../partials/footer__') %>

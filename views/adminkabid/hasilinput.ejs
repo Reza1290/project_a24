@@ -1,0 +1,302 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<style>
+    .card {
+        width: 100%; /* This will make the card take full width of its grid cell */
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transform: scale(1);
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card-header {
+        position: relative;
+        text-align: center;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        background: linear-gradient(135deg, #888, #fff);
+    }
+    
+
+    .profile-img {
+        width: 120px;
+        height: 170px;
+        border-radius: 10%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+    }
+
+    .card-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .divisi {
+        color: #888;
+        font-size: 0.8rem;
+        margin-top: -5px;
+    }
+
+    .btn-show-more {
+        background: #6a757f;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-top: 20px;
+        outline: none;
+    }
+
+    .btn-show-more:hover {
+        background: #2a3f54;
+    }
+
+    .additional-info {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease-out, opacity 0.3s ease;
+    text-align: left;
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+
+    .additional-info.show {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    /* Style untuk tabel */
+    /* Style untuk tabel */
+    .admin-details {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .admin-details td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .admin-details td.label {
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+        width: 150px; /* Menentukan lebar kolom label */
+    }
+
+    .admin-details td {
+        text-align: left;
+        font-size: 14px;
+        color: #555;
+        overflow: hidden;        /* Mencegah teks terlalu panjang dalam sel */
+        text-overflow: ellipsis; /* Jika teks terlalu panjang, akan muncul elipsis "..." */
+    }
+
+    .admin-details tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .admin-details tr:hover {
+        background-color: #e0e0e0;
+    }
+
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    .action-buttons i {
+        font-size: 20px;
+        margin-left: 10px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .action-buttons i:hover {
+        color: #2a3f54;
+    }
+
+    .action-buttons .fa-edit {
+        color: #4caf50;
+    }
+
+    .action-buttons .fa-trash {
+        color: #f44336;
+    }
+
+    /* Grid layout */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 1024px) {
+        .card-container {
+            grid-template-columns: repeat(2, 1fr); /* 2 cards per row for medium screens */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card-container {
+            grid-template-columns: 1fr; /* 1 card per row for small screens */
+        }
+    }
+</style>
+
+<!-- Page content -->
+<div class="right_col" role="main">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Data Admin</h3>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Data Admin <small>Admin yang sudah terdaftar</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!-- Wrap the cards in a container -->
+                    <div class="card-container">
+                        <% admins.forEach((admin, index) => { %> 
+                            <div class="card" id="profile-card">
+                                <div class="card-header">
+                                    <img src="/images/<%= admin.foto_profil_user || 'default.jpg' %>" alt="Foto Profil" class="profile-img">
+                                </div>
+                                <div class="card-body">
+                                    <div class="name"><%= admin.nama_user %></div>
+                                    <div class="divisi">NIP. <%= admin.nip_user %></div>
+                                    <button class="btn-show-more" data-id="<%= admin._id %>" onclick="toggleInfo(event)">Show More</button>
+                                    <div class="additional-info" data-id="<%= admin._id %>">
+                                      <table class="admin-details">
+                                        <tr>
+                                            <td><strong>Divisi</strong></td>
+                                            <td><%= admin.nama_bidang %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Jabatan</strong></td>
+                                            <td><%= admin.jabatan_user %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Email</strong></td>
+                                            <td><%= admin.email_user %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>No Telp</strong></td>
+                                            <td><%= admin.no_telp_user %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Alamat</strong></td>
+                                            <td><%= admin.alamat_user %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Username</strong></td>
+                                            <td><%= admin.username_user %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Password</strong></td>
+                                            <td>******</td> <!-- Password disembunyikan -->
+                                        </tr>
+                                    </table>
+                                    
+                                    </div>
+
+                                    <div class="action-buttons">
+                                        <a href="/user/edit/<%= admin.id_user %>">
+                                            <i class="fa fa-edit"></i> <!-- Ikon edit -->
+                                        </a>
+                                        <a href="#" onclick="deleteAdmin('<%= admin.id_user %>')">
+                                            <i class="fa fa-trash"></i> <!-- Ikon delete -->
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div> <!-- End of card-container -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+function toggleInfo(event) {
+    const clickedCard = event.target.closest('.card'); // Ambil card yang diklik
+    const info = clickedCard.querySelector('.additional-info'); // Ambil info di card yang diklik
+    const btn = clickedCard.querySelector('.btn-show-more'); // Ambil tombol di card yang diklik
+
+    // Cek apakah informasi sudah terbuka
+    if (info.classList.contains('show')) {
+        // Jika sudah terbuka, tutup
+        info.classList.remove('show');
+        btn.textContent = 'Show More';
+    } else {
+        // Tutup semua info di card lain KECUALI card yang diklik
+        const allInfos = document.querySelectorAll('.card .additional-info.show');
+        allInfos.forEach((el) => {
+            const parentCard = el.closest('.card');
+            if (parentCard !== clickedCard) { // Cek apakah bukan card yang diklik
+                el.classList.remove('show');
+                const otherBtn = parentCard.querySelector('.btn-show-more');
+                otherBtn.textContent = 'Show More';
+            }
+        });
+
+        // Tampilkan info untuk card yang diklik
+        info.classList.add('show');
+        btn.textContent = 'Show Less';
+    }
+}
+
+    function deleteAdmin(adminId) {
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/user/delete/' + adminId;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+
+<%- include('../partials/footer__') %>

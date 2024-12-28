@@ -1,0 +1,306 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<style>
+
+/* Styling untuk tombol Lihat Data di sebelah kanan */
+        .btn-minimal {
+            padding: 8px 16px; /* Ukuran kecil tapi tetap nyaman */
+            font-size: 14px;   /* Font yang proporsional */
+            font-weight: 500;  /* Sedikit bold */
+            border: none;      /* Tanpa border untuk kesan modern */
+            border-radius: 5px; /* Sudut tumpul ringan */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Animasi halus */
+        }
+
+        .x_title {
+            display: flex;
+            justify-content: space-between; /* Membuat ruang antara elemen kiri dan kanan */
+            align-items: center; /* Vertikal align agar elemen rata tengah */
+        }
+
+        .btn-wrapper {
+            margin-left: auto; /* Memastikan tombol berada di sebelah kanan */
+        }
+
+        .btn-wrapper-lihatdata {
+            position: absolute;
+            right: 30px; /* Tombol akan terletak di ujung kanan */
+            top: 16%; /* Menempatkan tombol di tengah vertikal */
+            transform: translateY(-50%); /* Untuk menyeimbangkan posisi tengah vertikal */
+        }
+
+
+        /* Menjaga form-group agar tetap responsif pada layar kecil */
+        @media (max-width: 768px) {
+            .form-group.double-column {
+                flex-direction: column;
+            }
+
+            .form-group.double-column .col-md-6 {
+                width: 100%;
+            }
+        }
+
+
+
+/* Styling untuk form */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container{
+            border-radius: 0.5rem;
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1),
+                        0px 5px 12px -2px rgba(0, 0, 0, 0.1),
+                        0px 18px 36px -6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .container .title{
+            padding-top: 25px;
+            padding-left: 25px;
+            padding-bottom: 10px;
+            background: #f6f8fa;
+        }
+
+        .container .title p{
+            font-size: 25px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .container .title p::before{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(to right, #F37A65, #D64141);
+        }
+
+        .user_details{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 25px;
+        }
+
+        .user_details .input_box{
+            width: calc(100% / 2 - 20px);
+            margin: 0 0 12px 0;
+        }
+
+        .input_box label{
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input_box label::after{
+            content: " *";
+            color: red;
+        }
+
+        .input_box input{
+            width: 100%;
+            height: 45px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            font-size: 16px;
+            padding-left: 15px;
+            padding-right: 15px;
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+            background-color: #f6f8fa;
+            font-family: 'Poppins', sans-serif;
+            transition: all 120ms ease-out 0s;
+        }
+
+
+        .input_box input:focus,
+        .input_box input:valid{
+            box-shadow: 0px 0px 0px 2px #AC8ECE;
+        }
+
+        .reg_btn{
+            padding: 25px;
+            margin: 15px 0;
+            margin-top: -30px;
+        }
+
+        .reg_btn input{
+            height: 45px;
+            width: 100%;
+            border: none;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            background: linear-gradient(to right, #F37A65, #D64141);
+            border-radius: 5px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .reg_btn input:hover{
+            background: linear-gradient(to right, #D64141, #F37A65);
+        }
+
+        .input_box select{
+            width: 100%;
+            height: 45px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            font-size: 16px;
+            padding-left: 15px;
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+            background-color: #f6f8fa;
+            font-family: 'Poppins', sans-serif;
+            transition: all 120ms ease-out 0s;
+        }
+
+
+        .input_box input:focus,
+        .input_box input:valid{
+            box-shadow: 0px 0px 0px 2px #AC8ECE;
+        }
+
+
+        @media screen and (max-width: 584px){
+
+            .user_details{
+                max-height: 340px;
+                overflow-y: scroll;
+            }
+
+            .user_details::-webkit-scrollbar{
+                width: 0;
+            }
+
+            .user_details .input_box{
+                width: 100%;
+            }
+
+            .gender .category{
+                width: 100%;
+            }
+
+        }
+
+
+        @media screen and (max-width: 419px){
+            .gender .category{
+                flex-direction: column;
+            }   
+        }
+</style>
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Manajemen Data Kepala Bidang</h3>
+        </div>
+        <div class="btn-wrapper-lihatdata">
+            <button class="btn-minimal btn-info" onclick="window.location.href='/adminkabid/hasilinput'">
+                <i class="fa fa-folder-open"></i> Lihat Data
+            </button>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Input Kabid <small>Masukkan data masing-masing dari kabid</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <!-- Smart Wizard -->
+                <p style="color: red;">*Pastikan semua data yang Anda masukkan sudah benar dan lengkap sebelum menyimpannya</p>
+                <div  class="container">
+
+                    <!-- Step 1 -->
+                    <div id="step-1">
+                      <div class="container">
+                        <div class="title">
+                            <p>Registration</p>
+                        </div>
+                
+                        <form action="/adminkabid/edit/<%= admin.id_adminkabid %>" method="POST" enctype="multipart/form-data" id="form-step-1" class="form-horizontal form-label-left">
+                            <div class="user_details">
+                                <div class="input_box">
+                                    <label for="nama_adminkabid">Nama Lengkap</label>
+                                    <input type="text" id="nama_adminkabid" value="<%= admin.nama_adminkabid %>" name="nama_adminkabid" placeholder="Tulis nama lengkap anda" autocomplete="off" required >
+                                </div>
+                                <div class="input_box">
+                                    <label for="nip_adminkabid">Nomor NIP</label>
+                                    <input type="number" id="nip_adminkabid" value="<%= admin.nip_adminkabid %>" name="nip_adminkabid" placeholder="Tulis nomor NIP anda" autocomplete="off" required>
+                                </div>
+                                <div class="input_box">
+                                  <label for="jabatan_adminkabid">Jabatan</label>
+                                  <input type="text" id="jabatan_adminkabid" value="<%= admin.jabatan_adminkabid %>" name="jabatan_adminkabid" placeholder="Tulis jabatan anda" autocomplete="off" required>
+                                 </div>
+                                 <div class="input_box">
+                                  <label for="alamat_adminkabid">Alamat</label>
+                                  <input type="text" id="alamat_adminkabid" value="<%= admin.alamat_adminkabid %>" name="alamat_adminkabid" placeholder="Tulis alamat lengkap anda" autocomplete="off" required>
+                                 </div>
+                                 <div class="input_box">
+                                  <label for="phone">Nomor Telepon</label>
+                                  <input type="number" id="no_telp_adminkabid" value="<%= admin.no_telp_adminkabid %>" name="no_telp_adminkabid" placeholder="Tulis nomor telepon anda" autocomplete="off" required>
+                                 </div>
+                                <div class="input_box">
+                                    <label for="email_adminkabid">Email</label>
+                                    <input type="email" id="email_adminkabid" value="<%= admin.email_adminkabid %>" name="email_adminkabid" placeholder="Tulis alamat e-mail anda" autocomplete="off" required>
+                                </div>
+                                <div class="input_box">
+                                  <label for="username_adminkabid">Username</label>
+                                  <input type="text" id="username_adminkabid" value="<%= admin.username_adminkabid %>" name="username_adminkabid" placeholder="Buat username baru anda" autocomplete="off" required>
+                                </div>
+                                <div class="input_box">
+                                    <label for="password_adminkabid">Password</label>
+                                    <input type="password" id="password_adminkabid" name="password_adminkabid" placeholder="Buat password baru anda" autocomplete="off" required>
+                                </div>
+                                <div class="input_box">
+                                  <label for="bidang_id">Pilih Divisi</label>
+                                  <select name="bidang_id" class="form-bidang" required>
+                                    <option value="">Tidak memilih divisi</option>
+                                    <% bidang.forEach(function(bidang) { %>
+                                        <option value="<%= bidang.id_bidang %>" <%= bidang.id_bidang === admin.bidang_id ? 'selected' : '' %>><%= bidang.nama_bidang %></option>
+                                    <% }); %>                                
+                                </select>
+                                </div>
+                                <div class="input_box">
+                                  <label for="foto_profil_adminkabid">Foto profil</label>
+                                  <input style="padding-top: 8px;" type="file" id="foto_profil_adminkabid" name="foto_profil_adminkabid" placeholder="Unggah file foto anda" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="reg_btn">
+                                <input type="submit" value="Register">
+                            </div>
+                        </form>
+                    </div>            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  
+
+<%- include('../partials/footer__') %>

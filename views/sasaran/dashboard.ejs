@@ -1,0 +1,158 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Manajemen Sasaran</h3>
+      </div>
+
+      <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!-- Form Input Sasaran -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Input Sasaran <small>Masukkan data sasaran di bawah ini</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <form action="/sasaran/tambah" method="POST" class="form-horizontal form-label-left">
+                <div class="form-group row">
+                    <label for="nama_sasaran" class="col-md-3 col-form-label text-right">Nama Sasaran</label>
+                    <div class="col-md-6">
+                      <input 
+                        type="text" 
+                        id="nama_sasaran" 
+                        name="nama_sasaran" 
+                        required="required" 
+                        class="form-control" 
+                        autocomplete="off">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row">
+                    <label for="indikator_sasaran" class="col-md-3 col-form-label text-right">Indikator Sasaran</label>
+                    <div class="col-md-6">
+                      <textarea 
+                        id="indikator_sasaran" 
+                        name="indikator_sasaran" 
+                        required="required" 
+                        class="form-control" 
+                        rows="4" 
+                        autocomplete="off"></textarea>
+                    </div>
+                  </div>                                 
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 offset-md-3">
+                  <button class="btn btn-danger" type="reset">Reset</button>
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Sasaran -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Data Sasaran <small>Data sasaran yang telah diinput</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Nama Sasaran</th>
+                  <th>Indikator Sasaran</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% sasaran.forEach((item, index) => { %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td><%= item.nama_sasaran %></td>
+                    <td><%= item.indikator_sasaran %></td>
+                    <td>
+                      <a href="#" data-toggle="modal" data-target="#editSasaranModal" onclick="editSasaran(<%= item.id_sasaran %>, '<%= item.nama_sasaran %>', '<%= item.indikator_sasaran %>')">Edit</a> | 
+                      <a href="/sasaran/delete/<%= item.id_sasaran %>" onclick="return confirm('Apakah Anda yakin ingin menghapus sasaran ini?')">Delete</a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+
+            <!-- Modal Edit Sasaran -->
+            <div class="modal fade" id="editSasaranModal" tabindex="-1" role="dialog" aria-labelledby="editSasaranModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editSasaranModalLabel">Edit Sasaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editSasaranForm" action="" method="POST">
+                      <div class="form-group">
+                        <label for="modal_nama_sasaran">Nama Sasaran</label>
+                        <input type="text" class="form-control" id="modal_nama_sasaran" name="nama_sasaran" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_indikator_sasaran">Indikator Sasaran</label>
+                        <textarea class="form-control" id="modal_indikator_sasaran" name="indikator_sasaran" required rows="3"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-success">Update</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function editSasaran(id, nama_sasaran, indikator_sasaran) {
+    document.getElementById("modal_nama_sasaran").value = nama_sasaran;
+    document.getElementById("modal_indikator_sasaran").value = indikator_sasaran;
+
+    var formAction = '/sasaran/edit/' + id;
+    document.querySelector("#editSasaranForm").action = formAction;
+  }
+</script>
+
+<%- include('../partials/footer__') %>

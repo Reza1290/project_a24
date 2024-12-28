@@ -1,0 +1,99 @@
+<body class="nav-md">
+  <div class="container body">
+    <div class="main_container">
+      <div class="col-md-3 left_col">
+        <div class="left_col scroll-view">
+          <div class="navbar nav_title" style="border: 0;">
+            <a href="/dashboard" class="site_title"><i class="fa fa-home"></i> <span>DASHBOARD</span></a>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <!-- menu profile quick info -->
+          <div class="profile clearfix">
+            <div class="profile_pic">
+              <img src="/gentelella-master/production/images/PROFIL_SP.jpeg" alt="..." class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+              <span>Welcome,</span>
+              <h2>
+                <%= user.name_user %>
+              </h2>
+            </div>
+          </div>
+          <!-- /menu profile quick info -->
+
+          <br />
+
+          <!-- sidebar menu -->
+          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+              <h3>General</h3>
+              <ul class="nav side-menu">
+                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="/dashboard">Dashboard</a></li>
+                  </ul>
+                </li>
+                <% if(['super_admin','admin'].some(role=> user.user_type.includes(role))) {%>
+                  <li><a><i class="fa fa-desktop"></i> Manajemen User <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <% if(user.user_type.includes('super_admin')) {%>
+                        <li><a href="/bidang/dashboard">Bidang Kabid</a></li>
+                        <li><a href="/adminkabid/input">Admin Kabid</a></li>
+                        <% } %>
+                          <li><a href="/user/input">Data User </a></li>
+                    </ul>
+                  </li>
+                  <% } %>
+                    <li><a><i class="fa fa-edit"></i> Pengelolaan Target <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <% if(user.user_type.includes('super_admin') || user.user_type.includes('admin_kabid')) {%>
+                          <li><a href="/sasaran/dashboard">Sasaran</a></li>
+                          <li><a href="/program/dashboard">Program</a></li>
+                          <li><a href="/kegiatan/dashboard">Kegiatan</a></li>
+                          <% } %>
+                            <li><a href="/sub_kegiatan/dashboard">Sub Kegiatan</a></li>
+                      </ul>
+                    </li>
+                    <li><a><i class="fa fa-table"></i> Isi Laporan <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="/laporan/dashboard">Laporan Perbulan</a></li>
+                      </ul>
+                    </li>
+                    <li><a><i class="fa fa-download"></i> Download Data <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="/laporan/bulanan">Laporan Perbulan</a></li>
+                        <li><a href="/laporan/triwulan">Laporan Triwulan</a></li>
+                      </ul>
+                    </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /sidebar menu -->
+        </div>
+      </div>
+
+      <!-- top navigation -->
+      <div class="top_nav">
+        <div class="nav_menu">
+          <div class="nav toggle">
+            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+          </div>
+          <nav class="nav navbar-nav">
+            <ul class=" navbar-right">
+              <li class="nav-item dropdown open" style="padding-left: 15px;">
+                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown"
+                  data-toggle="dropdown" aria-expanded="false">
+                  <img src="/gentelella-master/production/images/PROFIL_SP.jpeg" alt="">Super Admin
+                </a>
+                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="javascript:;">Aktifitas Login</a>
+                  <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <!-- /top navigation -->

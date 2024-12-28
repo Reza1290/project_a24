@@ -1,0 +1,138 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+	<!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Manajemen Bidang </h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Input Bidang <small>Masukkan beberapa bidang dibawah ini</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <!-- Form Input Bidang (Form Input Biasa, di luar modal) -->
+              <form action="/bidang/tambah" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Bidang <span class="required">*</span></label>
+                  <div class="col-md-6 col-sm-6 ">
+                    <input type="text" id="nama_bidang" name="nama_bidang" required="required" class="form-control " autocomplete="off">
+                  </div>
+                </div>
+                <div class="ln_solid"></div>
+                <div class="item form-group">
+                  <div class="col-md-6 col-sm-6 offset-md-3">
+                    <button class="btn btn-danger" type="reset">Reset</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Data Bidang <small>Telah di inputkan data bidang dibawah ini</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+            </ul>
+
+            <div class="clearfix"></div>
+
+          </div>
+
+          <div class="x_content">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Bidang</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% bidang.forEach((item, index) => { %> <!-- Looping data bidang -->
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th> <!-- Menampilkan nomor urut -->
+                    <td><%= item.nama_bidang %></td> <!-- Menampilkan nama_bidang dari data -->
+                    <td>
+                      <a href="#" data-toggle="modal" data-target="#editBidangModal" onclick="editBidang(<%= item.id_bidang %>, '<%= item.nama_bidang %>')">Edit</a> | 
+                      <a href="/bidang/delete/<%= item.id_bidang %>" onclick="return confirm('Apakah Anda yakin ingin menghapus bidang ini?')">Delete</a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+
+            <!-- Modal Edit Bidang -->
+            <div class="modal fade" id="editBidangModal" tabindex="-1" role="dialog" aria-labelledby="editBidangModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editBidangModalLabel">Edit Bidang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Form Edit Bidang -->
+                    <form id="editBidangForm" action="" method="POST">
+                      <div class="form-group">
+                        <label for="nama_bidang">Nama Bidang</label>
+                        <input type="text" class="form-control" id="modal_nama_bidang" name="nama_bidang" required>
+                      </div>
+                      <button type="submit" class="btn btn-success">Update</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function editBidang(id, nama_bidang) {
+      // Menetapkan nilai ID dan nama_bidang ke dalam form modal
+      document.getElementById("modal_nama_bidang").value = nama_bidang; // Pastikan ini form modal yang benar
+  
+      // Update URL form action agar sesuai dengan ID yang akan diedit
+      var formAction = '/bidang/edit/' + id;
+      document.querySelector("#editBidangForm").action = formAction;
+    }
+  </script>
+  
+<%- include('../partials/footer__') %>

@@ -1,0 +1,204 @@
+<%- include('../partials/header__') %>
+<%- include('../partials/sidebar__') %>
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Manajemen Program</h3>
+      </div>
+
+      <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!-- Form Input Program -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Input Program <small>Masukkan data program di bawah ini</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <form action="/program/tambah" method="POST" class="form-horizontal form-label-left">
+              <div class="form-group row">
+                <label for="id_sasaran" class="col-md-3 col-form-label text-right">Sasaran</label>
+                <div class="col-md-6">
+                  <select id="id_sasaran" name="id_sasaran" class="form-control" required>
+                    <option value="">Pilih Sasaran</option>
+                    <% if (sasaran && sasaran.length > 0) { %>
+                      <% sasaran.forEach((item) => { %>
+                        <option value="<%= item.id_sasaran %>"><%= item.nama_sasaran %></option>
+                      <% }); %>
+                    <% } else { %>
+                      <option value="">Tidak ada sasaran tersedia</option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="nama_program" class="col-md-3 col-form-label text-right">Nama Program</label>
+                <div class="col-md-6">
+                  <input type="text" id="nama_program" name="nama_program" required="required" class="form-control" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="indikator_program" class="col-md-3 col-form-label text-right">Indikator Program</label>
+                <div class="col-md-6">
+                  <textarea id="indikator_program" name="indikator_program" required="required" class="form-control" rows="4"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="satuan_program" class="col-md-3 col-form-label text-right">Satuan Program</label>
+                <div class="col-md-6">
+                  <select id="satuan_program" name="satuan_program" class="form-control" required>
+                    <option value="">Pilih Satuan</option>
+                    <option value="Unit">Unit</option>
+                    <option value="Liter">Liter</option>
+                    <option value="Persentase">Persentase</option>
+                    <option value="Dokumen">Dokumen</option>
+                    <option value="Berita Acara">Berita Acara</option>
+                    <option value="Masukan">Masukan</option>
+                    <option value="Paket">Paket</option>
+                    <option value="Orang">Orang</option>
+                    <option value="Jam">Jam</option>
+                    <option value="Bulan">Bulan</option>
+                    <option value="Tahun">Tahun</option>
+                    <option value="Lembar">Lembar</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 offset-md-3">
+                  <button class="btn btn-danger" type="reset">Reset</button>
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Program -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Data Program <small>Data program yang telah diinput</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Program</th>
+                  <th>Indikator Program</th>
+                  <th>Satuan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% programs.forEach((item, index) => { %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td><%= item.nama_program %></td>
+                    <td><%= item.indikator_program %></td>
+                    <td><%= item.satuan_program %></td>
+                    <td>
+                      <a href="#" data-toggle="modal" data-target="#editProgramModal" onclick="editProgram(<%= item.id_program %>, '<%= item.nama_program %>', '<%= item.indikator_program %>', '<%= item.satuan_program %>')">Edit</a> | 
+                      <a href="/program/delete/<%= item.id_program %>" onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">Delete</a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+
+            <!-- Modal Edit Program -->
+            <div class="modal fade" id="editProgramModal" tabindex="-1" role="dialog" aria-labelledby="editProgramModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editProgramModalLabel">Edit Program</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editProgramForm" action="" method="POST">
+                      <div class="form-group">
+                        <label for="modal_nama_program">Nama Program</label>
+                        <input type="text" class="form-control" id="modal_nama_program" name="nama_program" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_indikator_program">Indikator Program</label>
+                        <textarea class="form-control" id="modal_indikator_program" name="indikator_program" required rows="3"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_satuan_program">Satuan Program</label>
+                        <select id="modal_satuan_program" name="satuan_program" class="form-control" required>
+                          <option value="Unit">Unit</option>
+                          <option value="Liter">Liter</option>
+                          <option value="Persentase">Persentase</option>
+                          <option value="Dokumen">Dokumen</option>
+                          <option value="Berita Acara">Berita Acara</option>
+                          <option value="Masukan">Masukan</option>
+                          <option value="Paket">Paket</option>
+                          <option value="Orang">Orang</option>
+                          <option value="Jam">Jam</option>
+                          <option value="Bulan">Bulan</option>
+                          <option value="Tahun">Tahun</option>
+                          <option value="Lembar">Lembar</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-success">Update</button>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function editProgram(id, nama_program, indikator_program, satuan_program) {
+    document.getElementById("modal_nama_program").value = nama_program;
+    document.getElementById("modal_indikator_program").value = indikator_program;
+    document.getElementById("modal_satuan_program").value = satuan_program;
+
+    var formAction = '/program/edit/' + id;
+    document.querySelector("#editProgramForm").action = formAction;
+  }
+</script>
+
+<%- include('../partials/footer__') %>
