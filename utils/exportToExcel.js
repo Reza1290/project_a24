@@ -43,7 +43,7 @@ async function exportToExcel(data, fileName) {
     cell.font = { bold: true };
     cell.alignment = { vertical: 'middle', horizontal: 'center' };
   }
-  for (let i = 5; i <= 14; i++) {
+  for (let i = 5; i <= 13; i++) {
     const cell = sheet.getCell(2, i); // Second row for subheaders
     cell.font = { bold: true };
     cell.alignment = { vertical: 'middle', horizontal: 'center' };

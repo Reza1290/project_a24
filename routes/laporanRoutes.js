@@ -9,6 +9,7 @@ const fs = require('fs')
 const path = require('path');
 const modelSasaran = require("../model/sasaranModel");
 const verifyUserType = require("../middleware/verifyUserType");
+const exportToExcelTriwulan = require("../utils/exportToExcelTriwulan");
 
 // Daftar nilai ENUM yang valid untuk 'satuan_realisasi_kinerja'
 const validSatuanRealisasiKinerja = [
@@ -57,7 +58,7 @@ router.get('/triwulan/download', async (req, res) => {
 
         // Assuming laporanData is being used elsewhere or logged
         console.log(laporanData);
-        const excelFilePath = await exportToExcel(laporanData, `Laporan_Triwulan_${triwulan}`);
+        const excelFilePath = await exportToExcelTriwulan(laporanData, `Laporan_Triwulan_${triwulan}`);
 
         // Set the headers for file download
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
