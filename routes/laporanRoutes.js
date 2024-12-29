@@ -281,6 +281,83 @@ router.post('/komentar', async (req, res) => {
     }
 });
 
+router.get('/chart/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const rowData = await modelLaporan.getLaporanByDashboard();
+        console.log(rowData)
+
+        if (!rowData) {
+            return res.status(404).json({ error: 'Data not found for the given chart ID' });
+        }
+
+
+        const chartData = {
+            labels: rowData.map(row => row.nama_bidang),  
+            data: rowData.map(row => id == 1 ? row.total_sk_target > 0
+                ? ((row.total_realisasi_kinerja / row.total_sk_target) * 100).toFixed(2)
+                : 0 : id == 2 ?
+                row.total_anggaran_sub_kegiatan > 0
+                    ? ((row.total_realisasi_anggaran / row.total_anggaran_sub_kegiatan) * 100).toFixed(2)
+                    : 0 :
+                0
+            ), 
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], 
+        };
+
+        if (id == 3) {
+            let totalSkTarget = 0;
+            let totalRealisasiKinerja = 0;
+            let totalAnggaranSubKegiatan = 0;
+            let totalRealisasiAnggaran = 0;
+
+            rowData.forEach(row => {
+                totalSkTarget += row.total_sk_target;
+                totalRealisasiKinerja += row.total_realisasi_kinerja;
+                totalAnggaranSubKegiatan += row.total_anggaran_sub_kegiatan;
+                totalRealisasiAnggaran += row.total_realisasi_anggaran;
+            });
+
+            const kinerjaPercentage = totalSkTarget > 0
+                ? ((totalRealisasiKinerja / totalSkTarget) * 100).toFixed(2)
+                : 0;
+
+            const anggaranPercentage = totalAnggaranSubKegiatan > 0
+                ? ((totalRealisasiAnggaran / totalAnggaranSubKegiatan) * 100).toFixed(2)
+                : 0;
+            return res.json({
+                labels: ['Kinerja', 'Anggaran', 'Lainnya'],
+                datasets: [{
+                    label: 'Percentage', 
+                    data: [kinerjaPercentage, anggaranPercentage, 100 - (kinerjaPercentage + anggaranPercentage)], 
+                    backgroundColor: ['#FF6384', '#36A2EB','#36A12B'], 
+                    hoverOffset: 4
+                }]
+            });
+
+        }
+
+
+        const responseData = {
+            labels: chartData.labels,
+            datasets: [{
+                label: `Chart ${id}`,
+                data: chartData.data,
+                backgroundColor: chartData.backgroundColor || ['#FF6384', '#36A2EB', '#FFCE56'], // Default colors
+                hoverOffset: 4
+            }]
+        };
+
+        res.json(responseData);
+
+    } catch (error) {
+        console.error('Error fetching chart data:', error);
+        res.status(500).json({ error: 'Failed to fetch chart data' });
+    }
+});
+
+
 // Route to change the status of a report
 router.post('/change-status', async (req, res) => {
     const { id_laporan_bulanan, status } = req.body;

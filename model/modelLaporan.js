@@ -79,7 +79,7 @@ class modelLaporan {
         });
     }
 
-    
+
     // Mendapatkan data laporan berdasarkan ID
     static async getLaporanById(id) {
         return new Promise((resolve, reject) => {
@@ -182,6 +182,50 @@ WHERE
         });
     }
 
+    static async getLaporanByDashboard() {
+        return new Promise((resolve, reject) => {
+            const query = `
+               SELECT 
+                    user.bidang_id, 
+                    bidang.nama_bidang AS nama_bidang, 
+                    MAX(lb.id_laporan_bulanan) AS id_laporan_bulanan,
+                    MAX(k.id_kegiatan) AS id_kegiatan, 
+                    MAX(sk.id_sub_kegiatan) AS id_sub_kegiatan, 
+                    SUM(sk.target) AS total_sk_target, 
+                    SUM(sk.anggaran_sub_kegiatan) AS total_anggaran_sub_kegiatan,
+                    SUM(realisasi_kinerja) AS total_realisasi_kinerja,
+                    SUM(realisasi_anggaran) AS total_realisasi_anggaran
+                FROM 
+                    laporan_bulanan lb
+                LEFT JOIN 
+                    kegiatan k ON lb.kegiatan_id = k.id_kegiatan
+                LEFT JOIN 
+                    sub_kegiatan sk ON lb.sub_kegiatan_id = sk.id_sub_kegiatan
+                LEFT JOIN 
+                    program p ON k.id_program = p.id_program
+                LEFT JOIN 
+                    sasaran s ON p.id_sasaran = s.id_sasaran
+                LEFT JOIN 
+                    user ON lb.id_user = user.id_user
+                LEFT JOIN 
+                    bidang ON user.bidang_id = bidang.id_bidang
+                GROUP BY 
+                    user.bidang_id, 
+                    bidang.nama_bidang
+
+            `;
+
+            connection.query(query, function (err, results) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+
     static async getLaporanByTriwulan(triwulan) {
         return new Promise((resolve, reject) => {
             const query = `
@@ -214,7 +258,7 @@ WHERE
                 3: ['Juli', 'Agustus', 'September'],      // Triwulan 3
                 4: ['Oktober', 'November', 'Desember']    // Triwulan 4
             };
-                      
+
 
             const months = triwulanMapping[triwulan];
             console.log(triwulan)
@@ -299,6 +343,8 @@ WHERE
             );
         });
     }
+
+
 
 
 }
