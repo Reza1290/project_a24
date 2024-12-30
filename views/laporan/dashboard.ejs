@@ -196,6 +196,7 @@
                                                     <th>Bulan</th>
                                                     <th>Kegiatan</th>
                                                     <th>Realisasi Kinerja</th>
+                                                    <th>Anggaran Sub Kegiatan</th>
                                                     <th>Realisasi Anggaran</th>
                                                     <th>Status</th>
                                                     <th>Aksi</th>
@@ -217,7 +218,10 @@
                                                             <%= laporan.realisasi_kinerja %>
                                                                 <%= laporan.satuan_realisasi_kinerja %>
                                                         </td>
-                                                        <td>Rp <%= laporan.realisasi_anggaran.toLocaleString('id-ID') %>
+                                                        <td>
+                                                            Rp. <%= laporan.anggaran_sub_kegiatan.toLocaleString('id-ID') %>
+                                                        </td>
+                                                        <td>Rp. <%= laporan.realisasi_anggaran.toLocaleString('id-ID') %>
                                                         </td>
                                                         <td>
 

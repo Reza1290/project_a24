@@ -1,215 +1,92 @@
 <%- include('../partials/header__') %>
-<%- include('../partials/sidebar__') %>
+  <%- include('../partials/sidebar__') %>
 
-<!-- page content -->
-<div class="right_col" role="main">
-  <div class="">
-    <div class="page-title">
-      <div class="title_left">
-        <h3>Manajemen Sub Kegiatan</h3>
-      </div>
+    <!-- page content -->
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Manajemen Sub Kegiatan</h3>
+          </div>
 
-      <div class="title_right">
-        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">Go!</button>
-            </span>
+          <div class="title_right">
+            <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-    <!-- Form Input Sub Kegiatan -->
-     <% if(user.user_type != 'admin_kabid'){ %>
-    <div class="row">
-      <div class="col-md-12 col-sm-12 ">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>Input Sub Kegiatan <small>Masukkan data sub kegiatan di bawah ini</small></h2>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <form action="/sub_kegiatan/tambah" method="POST" class="form-horizontal form-label-left">
-              <div class="form-group row">
-                <label for="id_kegiatan" class="col-md-3 col-form-label text-right">Kegiatan</label>
-                <div class="col-md-6">
-                  <select id="id_kegiatan" name="id_kegiatan" class="form-control" required>
-                    <option value="">Pilih Kegiatan</option>
-                    <% if (kegiatan && kegiatan.length > 0) { %>
-                      <% kegiatan.forEach((item) => { %>
-                        <option value="<%= item.id_kegiatan %>"><%= item.nama_kegiatan %></option>
-                      <% }); %>
-                    <% } else { %>
-                      <option value="">Tidak ada kegiatan tersedia</option>
-                    <% } %>
-                  </select>
+        <!-- Form Input Sub Kegiatan -->
+        <% if(user.user_type !='admin_kabid' ){ %>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Input Sub Kegiatan <small>Masukkan data sub kegiatan di bawah ini</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                  </ul>
+                  <div class="clearfix"></div>
                 </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="nama_sub_kegiatan" class="col-md-3 col-form-label text-right">Nama Sub Kegiatan</label>
-                <div class="col-md-6">
-                  <input 
-                    type="text" 
-                    id="nama_sub_kegiatan" 
-                    name="nama_sub_kegiatan" 
-                    required="required" 
-                    class="form-control" 
-                    autocomplete="off">
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="indikator_sub_kegiatan" class="col-md-3 col-form-label text-right">Indikator Sub Kegiatan</label>
-                <div class="col-md-6">
-                  <textarea 
-                    id="indikator_sub_kegiatan" 
-                    name="indikator_sub_kegiatan" 
-                    required="required" 
-                    class="form-control" 
-                    rows="4" 
-                    autocomplete="off"></textarea>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="target" class="col-md-3 col-form-label text-right">Target</label>
-                <div class="col-md-6">
-                  <input 
-                    type="number" 
-                    id="target" 
-                    name="target" 
-                    required="required" 
-                    class="form-control" 
-                    autocomplete="off">
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="satuan_sub_kegiatan" class="col-md-3 col-form-label text-right">Satuan Sub Kegiatan</label>
-                <div class="col-md-6">
-                  <select id="satuan_sub_kegiatan" name="satuan_sub_kegiatan" class="form-control" required>
-                    <option value="">Pilih Satuan Sub Kegiatan</option>
-                    <option value="Unit">Unit</option>
-                    <option value="Liter">Liter</option>
-                    <option value="Persentase">Persentase</option>
-                    <option value="Dokumen">Dokumen</option>
-                    <option value="Berita Acara">Berita Acara</option>
-                    <option value="Masukan">Masukan</option>
-                    <option value="Paket">Paket</option>
-                    <option value="Orang">Orang</option>
-                    <option value="Jam">Jam</option>
-                    <option value="Bulan">Bulan</option>
-                    <option value="Tahun">Tahun</option>
-                    <option value="Lembar">Lembar</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="anggaran_sub_kegiatan" class="col-md-3 col-form-label text-right">Anggaran Sub Kegiatan</label>
-                <div class="col-md-6">
-                  <input 
-                    type="number" 
-                    id="anggaran_sub_kegiatan" 
-                    name="anggaran_sub_kegiatan" 
-                    required="required" 
-                    class="form-control" 
-                    autocomplete="off">
-                </div>
-              </div>
-
-              <div class="ln_solid"></div>
-              <div class="form-group">
-                <div class="col-md-6 col-sm-6 offset-md-3">
-                  <button class="btn btn-danger" type="reset">Reset</button>
-                  <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% } %>
-    <!-- Data Sub Kegiatan -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>Data Sub Kegiatan <small>Data sub kegiatan yang telah diinput</small></h2>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Kegiatan</th>
-                  <th>Nama Sub Kegiatan</th>
-                  <th>Indikator Sub Kegiatan</th>
-                  <th>Target</th>
-                  <th>Satuan Sub Kegiatan</th>
-                  <th>Anggaran Sub Kegiatan</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% sub_kegiatan.forEach((item, index) => { %>
-                  <tr>
-                    <th scope="row"><%= index + 1 %></th>
-                    <td><%= item.nama_kegiatan %></td>
-                    <td><%= item.nama_sub_kegiatan %></td>
-                    <td><%= item.indikator_sub_kegiatan %></td>
-                    <td><%= item.target %></td>
-                    <td><%= item.satuan_sub_kegiatan %></td>
-                    <td><%= item.anggaran_sub_kegiatan %></td>
-                    <td>
-                      <a href="#" data-toggle="modal" data-target="#editSubKegiatanModal" onclick="editSubKegiatan(<%= item.id_sub_kegiatan %>, '<%= item.nama_sub_kegiatan %>', '<%= item.indikator_sub_kegiatan %>', <%= item.target %>, '<%= item.satuan_sub_kegiatan %>', <%= item.anggaran_sub_kegiatan %>)">Edit</a> | 
-                      <a href="/sub_kegiatan/delete/<%= item.id_sub_kegiatan %>" onclick="return confirm('Apakah Anda yakin ingin menghapus sub kegiatan ini?')">Delete</a>
-                    </td>
-                  </tr>
-                <% }); %>
-              </tbody>
-            </table>
-
-            <!-- Modal Edit Sub Kegiatan -->
-            <div class="modal fade" id="editSubKegiatanModal" tabindex="-1" role="dialog" aria-labelledby="editSubKegiatanModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="editSubKegiatanModalLabel">Edit Sub Kegiatan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="editSubKegiatanForm" action="" method="POST">
-                      <div class="form-group">
-                        <label for="modal_nama_sub_kegiatan">Nama Sub Kegiatan</label>
-                        <input type="text" class="form-control" id="modal_nama_sub_kegiatan" name="nama_sub_kegiatan" required>
+                <div class="x_content">
+                  <form action="/sub_kegiatan/tambah" method="POST" class="form-horizontal form-label-left">
+                    <div class="form-group row">
+                      <label for="id_kegiatan" class="col-md-3 col-form-label text-right">Kegiatan</label>
+                      <div class="col-md-6">
+                        <select id="id_kegiatan" name="id_kegiatan" class="form-control" required>
+                          <option value="">Pilih Kegiatan</option>
+                          <% if (kegiatan && kegiatan.length> 0) { %>
+                            <% kegiatan.forEach((item)=> { %>
+                              <option value="<%= item.id_kegiatan %>">
+                                <%= item.nama_kegiatan %>
+                              </option>
+                              <% }); %>
+                                <% } else { %>
+                                  <option value="">Tidak ada kegiatan tersedia</option>
+                                  <% } %>
+                        </select>
                       </div>
-                      <div class="form-group">
-                        <label for="modal_indikator_sub_kegiatan">Indikator Sub Kegiatan</label>
-                        <textarea class="form-control" id="modal_indikator_sub_kegiatan" name="indikator_sub_kegiatan" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="nama_sub_kegiatan" class="col-md-3 col-form-label text-right">Nama Sub
+                        Kegiatan</label>
+                      <div class="col-md-6">
+                        <input type="text" id="nama_sub_kegiatan" name="nama_sub_kegiatan" required="required"
+                          class="form-control" autocomplete="off">
                       </div>
-                      <div class="form-group">
-                        <label for="modal_target">Target</label>
-                        <input type="number" class="form-control" id="modal_target" name="target" required>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="indikator_sub_kegiatan" class="col-md-3 col-form-label text-right">Indikator Sub
+                        Kegiatan</label>
+                      <div class="col-md-6">
+                        <textarea id="indikator_sub_kegiatan" name="indikator_sub_kegiatan" required="required"
+                          class="form-control" rows="4" autocomplete="off"></textarea>
                       </div>
-                      <div class="form-group">
-                        <label for="modal_satuan_sub_kegiatan">Satuan Sub Kegiatan</label>
-                        <select class="form-control" id="modal_satuan_sub_kegiatan" name="satuan_sub_kegiatan" required>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="target" class="col-md-3 col-form-label text-right">Target</label>
+                      <div class="col-md-6">
+                        <input type="number" id="target" name="target" required="required" class="form-control"
+                          autocomplete="off">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="satuan_sub_kegiatan" class="col-md-3 col-form-label text-right">Satuan Sub
+                        Kegiatan</label>
+                      <div class="col-md-6">
+                        <select id="satuan_sub_kegiatan" name="satuan_sub_kegiatan" class="form-control" required>
+                          <option value="">Pilih Satuan Sub Kegiatan</option>
                           <option value="Unit">Unit</option>
                           <option value="Liter">Liter</option>
                           <option value="Persentase">Persentase</option>
@@ -224,36 +101,171 @@
                           <option value="Lembar">Lembar</option>
                         </select>
                       </div>
-                      <div class="form-group">
-                        <label for="modal_anggaran_sub_kegiatan">Anggaran Sub Kegiatan</label>
-                        <input type="number" class="form-control" id="modal_anggaran_sub_kegiatan" name="anggaran_sub_kegiatan" required>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="anggaran_sub_kegiatan" class="col-md-3 col-form-label text-right">Anggaran Sub
+                        Kegiatan</label>
+                      <div class="col-md-6">
+                        <input type="number" id="anggaran_sub_kegiatan" name="anggaran_sub_kegiatan" required="required"
+                          class="form-control" autocomplete="off">
                       </div>
-                      <input type="hidden" name="id_sub_kegiatan" id="modal_id_sub_kegiatan">
-                      <button type="submit" class="btn btn-success">Update</button>
-                    </form>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                      <div class="col-md-6 col-sm-6 offset-md-3">
+                        <button class="btn btn-danger" type="reset">Reset</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+            <!-- Data Sub Kegiatan -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Data Sub Kegiatan <small>Data sub kegiatan yang telah diinput</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Kegiatan</th>
+                          <th>Nama Sub Kegiatan</th>
+                          <th>Indikator Sub Kegiatan</th>
+                          <th>Target</th>
+                          <th>Satuan Sub Kegiatan</th>
+                          <th>Anggaran Sub Kegiatan</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% sub_kegiatan.forEach((item, index)=> { %>
+                          <tr>
+                            <th scope="row">
+                              <%= index + 1 %>
+                            </th>
+                            <td>
+                              <%= item.nama_kegiatan %>
+                            </td>
+                            <td>
+                              <%= item.nama_sub_kegiatan %>
+                            </td>
+                            <td>
+                              <%= item.indikator_sub_kegiatan %>
+                            </td>
+                            <td>
+                              <%= item.target %>
+                            </td>
+                            <td>
+                              <%= item.satuan_sub_kegiatan %>
+                            </td>
+                            <td>
+                              Rp. <%= item.anggaran_sub_kegiatan.toLocaleString('id-ID') %>
+                            </td>
+                            <td>
+                              <a href="#" data-toggle="modal" data-target="#editSubKegiatanModal"
+                                onclick="editSubKegiatan(<%= item.id_sub_kegiatan %>, '<%= item.nama_sub_kegiatan %>', '<%= item.indikator_sub_kegiatan %>', <%= item.target %>, '<%= item.satuan_sub_kegiatan %>', <%= item.anggaran_sub_kegiatan %>)">Edit</a>
+                              |
+                              <a href="/sub_kegiatan/delete/<%= item.id_sub_kegiatan %>"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus sub kegiatan ini?')">Delete</a>
+                            </td>
+                          </tr>
+                          <% }); %>
+                      </tbody>
+                    </table>
+
+                    <!-- Modal Edit Sub Kegiatan -->
+                    <div class="modal fade" id="editSubKegiatanModal" tabindex="-1" role="dialog"
+                      aria-labelledby="editSubKegiatanModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editSubKegiatanModalLabel">Edit Sub Kegiatan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="editSubKegiatanForm" action="" method="POST">
+                              <div class="form-group">
+                                <label for="modal_nama_sub_kegiatan">Nama Sub Kegiatan</label>
+                                <input type="text" class="form-control" id="modal_nama_sub_kegiatan"
+                                  name="nama_sub_kegiatan" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="modal_indikator_sub_kegiatan">Indikator Sub Kegiatan</label>
+                                <textarea class="form-control" id="modal_indikator_sub_kegiatan"
+                                  name="indikator_sub_kegiatan" rows="4" required></textarea>
+                              </div>
+                              <div class="form-group">
+                                <label for="modal_target">Target</label>
+                                <input type="number" class="form-control" id="modal_target" name="target" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="modal_satuan_sub_kegiatan">Satuan Sub Kegiatan</label>
+                                <select class="form-control" id="modal_satuan_sub_kegiatan" name="satuan_sub_kegiatan"
+                                  required>
+                                  <option value="Unit">Unit</option>
+                                  <option value="Liter">Liter</option>
+                                  <option value="Persentase">Persentase</option>
+                                  <option value="Dokumen">Dokumen</option>
+                                  <option value="Berita Acara">Berita Acara</option>
+                                  <option value="Masukan">Masukan</option>
+                                  <option value="Paket">Paket</option>
+                                  <option value="Orang">Orang</option>
+                                  <option value="Jam">Jam</option>
+                                  <option value="Bulan">Bulan</option>
+                                  <option value="Tahun">Tahun</option>
+                                  <option value="Lembar">Lembar</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="modal_anggaran_sub_kegiatan">Anggaran Sub Kegiatan</label>
+                                <input type="number" class="form-control" id="modal_anggaran_sub_kegiatan"
+                                  name="anggaran_sub_kegiatan" required>
+                              </div>
+                              <input type="hidden" name="id_sub_kegiatan" id="modal_id_sub_kegiatan">
+                              <button type="submit" class="btn btn-success">Update</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
-
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<%- include('../partials/footer__') %>
+    <%- include('../partials/footer__') %>
 
-<script>
-  function editSubKegiatan(id, nama, indikator, target, satuan, anggaran) {
-    document.getElementById('modal_id_sub_kegiatan').value = id;
-    document.getElementById('modal_nama_sub_kegiatan').value = nama;
-    document.getElementById('modal_indikator_sub_kegiatan').value = indikator;
-    document.getElementById('modal_target').value = target;
-    document.getElementById('modal_satuan_sub_kegiatan').value = satuan;
-    document.getElementById('modal_anggaran_sub_kegiatan').value = anggaran;
-    // You can set the form action dynamically based on your routing
-    document.getElementById('editSubKegiatanForm').action = "/sub_kegiatan/update/" + id;
-  }
-</script>
+      <script>
+        function formatToIDR(number) {
+          return new Intl.NumberFormat('id-ID',
+            { style: 'currency', currency: 'IDR' }).format(number);
+        }
+        function editSubKegiatan(id, nama, indikator, target, satuan, anggaran) {
+          document.getElementById('modal_id_sub_kegiatan').value = id;
+          document.getElementById('modal_nama_sub_kegiatan').value = nama;
+          document.getElementById('modal_indikator_sub_kegiatan').value = indikator;
+          document.getElementById('modal_target').value = target;
+          document.getElementById('modal_satuan_sub_kegiatan').value = satuan;
+          document.getElementById('modal_anggaran_sub_kegiatan').value = anggaran;
+          // You can set the form action dynamically based on your routing
+          document.getElementById('editSubKegiatanForm').action = "/sub_kegiatan/update/" + id;
+        }
+      </script>

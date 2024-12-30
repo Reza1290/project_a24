@@ -33,7 +33,7 @@ router.get('/tambah', async (req, res) => {
 
 // Tambah program baru
 router.post('/tambah', async (req, res) => {
-  const { id_sasaran, nama_program, indikator_program, satuan_program } = req.body;
+  const { id_sasaran, nama_program, indikator_program, satuan_program, target_program } = req.body;
 
   // Validasi satuan_program harus sesuai dengan nilai ENUM
   if (!validSatuanProgram.includes(satuan_program)) {
@@ -41,7 +41,7 @@ router.post('/tambah', async (req, res) => {
   }
 
   try {
-    await modelProgram.tambahProgram({ id_sasaran, nama_program, indikator_program, satuan_program });
+    await modelProgram.tambahProgram({ id_sasaran, nama_program, indikator_program, satuan_program, target_program });
     res.redirect('/program/dashboard');
   } catch (error) {
     res.status(500).json({ message: "Gagal menambah program", error });
@@ -63,7 +63,7 @@ router.get('/edit/:id', async (req, res) => {
 // Edit program
 router.post('/edit/:id', async (req, res) => {
   const { id } = req.params;
-  const { id_sasaran, nama_program, indikator_program, satuan_program } = req.body;
+  const { id_sasaran, nama_program, indikator_program, satuan_program, target_program } = req.body;
 
   // Validasi satuan_program harus sesuai dengan nilai ENUM
   if (!validSatuanProgram.includes(satuan_program)) {
@@ -71,7 +71,7 @@ router.post('/edit/:id', async (req, res) => {
   }
 
   try {
-    await modelProgram.updateProgram(id, { id_sasaran, nama_program, indikator_program, satuan_program });
+    await modelProgram.updateProgram(id, { id_sasaran, nama_program, indikator_program, satuan_program, target_program });
     res.redirect('/program/dashboard');
   } catch (error) {
     res.status(500).json({ message: "Gagal mengupdate program", error });

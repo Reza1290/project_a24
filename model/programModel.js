@@ -5,8 +5,8 @@ class modelProgram {
   static async tambahProgram(data) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "INSERT INTO program (id_sasaran, nama_program, indikator_program, satuan_program) VALUES (?, ?, ?, ?)",
-        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program],
+        "INSERT INTO program (id_sasaran, nama_program, indikator_program, satuan_program, target_program) VALUES (?, ?, ?, ?, ?)",
+        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program, target_program],
         function (err, result) {
           if (err) {
             reject(err);
@@ -60,8 +60,8 @@ class modelProgram {
   static async updateProgram(id, data) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "UPDATE program SET id_sasaran = ?, nama_program = ?, indikator_program = ?, satuan_program = ? WHERE id_program = ?",
-        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program, id],
+        "UPDATE program SET id_sasaran = ?, nama_program = ?, indikator_program = ?, satuan_program = ?, target_program = ? WHERE id_program = ?",
+        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program, data.target_program, id],
         function (err, result) {
           if (err) {
             reject(err);
