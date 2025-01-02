@@ -9,16 +9,6 @@
         <h3>Manajemen Program</h3>
       </div>
 
-      <div class="title_right">
-        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">Go!</button>
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="clearfix"></div>
@@ -68,7 +58,7 @@
               <div class="form-group row">
                 <label for="target_program" class="col-md-3 col-form-label text-right">Target</label>
                 <div class="col-md-6">
-                  <textarea id="target_program" name="target_program" required="required" class="form-control" rows="4"></textarea>
+                  <input type="text" id="target_program" name="target_program" required="required" class="form-control" autocomplete="off">
                 </div>
               </div>
 
@@ -124,6 +114,7 @@
                   <th>#</th>
                   <th>Nama Program</th>
                   <th>Indikator Program</th>
+                  <th>Target</th>
                   <th>Satuan</th>
                   <th>Aksi</th>
                 </tr>
@@ -134,9 +125,10 @@
                     <th scope="row"><%= index + 1 %></th>
                     <td><%= item.nama_program %></td>
                     <td><%= item.indikator_program %></td>
+                    <td><%= item.target_program %></td>
                     <td><%= item.satuan_program %></td>
                     <td>
-                      <a href="#" data-toggle="modal" data-target="#editProgramModal" onclick="editProgram(<%= item.id_program %>, '<%= item.nama_program %>', '<%= item.indikator_program %>', '<%= item.satuan_program %>')">Edit</a> | 
+                      <a href="#" data-toggle="modal" data-target="#editProgramModal" onclick="editProgram(<%= item.id_program %>, '<%= item.nama_program %>', '<%= item.indikator_program %>', '<%= item.target_program %>', '<%= item.satuan_program %>')">Edit</a> | 
                       <a href="/program/delete/<%= item.id_program %>" onclick="return confirm('Apakah Anda yakin ingin menghapus program ini?')">Delete</a>
                     </td>
                   </tr>
@@ -163,6 +155,10 @@
                       <div class="form-group">
                         <label for="modal_indikator_program">Indikator Program</label>
                         <textarea class="form-control" id="modal_indikator_program" name="indikator_program" required rows="3"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="modal_target_program">Target Program</label>
+                        <input type="text" class="form-control" id="modal_target_program" name="target_program" required>
                       </div>
                       <div class="form-group">
                         <label for="modal_satuan_program">Satuan Program</label>
@@ -197,14 +193,18 @@
 </div>
 
 <script>
-  function editProgram(id, nama_program, indikator_program, satuan_program) {
-    document.getElementById("modal_nama_program").value = nama_program;
-    document.getElementById("modal_indikator_program").value = indikator_program;
-    document.getElementById("modal_satuan_program").value = satuan_program;
+    function editProgram(id, nama_program, indikator_program, target_program, satuan_program) {
+      // Menampilkan data di modal
+      document.getElementById("modal_nama_program").value = nama_program;
+      document.getElementById("modal_indikator_program").value = indikator_program;
+      document.getElementById("modal_target_program").value = target_program;  // Pastikan target_program terisi
+      document.getElementById("modal_satuan_program").value = satuan_program;
 
-    var formAction = '/program/edit/' + id;
-    document.querySelector("#editProgramForm").action = formAction;
-  }
+      // Menyusun URL untuk action form edit
+      var formAction = '/program/edit/' + id;
+      document.querySelector("#editProgramForm").action = formAction;
+    }
+
 </script>
 
 <%- include('../partials/footer__') %>

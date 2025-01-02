@@ -1,6 +1,62 @@
 <%- include('../partials/header__') %>
     <%- include('../partials/sidebar__') %>
 
+    <style>
+        .comment-section {
+            max-height: 400px; /* Set height to make the modal scrollable if there are many comments */
+            overflow-y: auto;
+        }
+    
+        .comment {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    
+        .comment .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    
+        .comment .comment-header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+    
+        .comment .comment-header .comment-author {
+            font-weight: bold;
+            color: #007bff;
+        }
+    
+        .comment .comment-body {
+            font-size: 14px;
+            color: #333;
+        }
+    
+        .comment .comment-footer {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: right;
+        }
+    
+        .comment hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    
+        /* Style for Loading State */
+        .comment-section p {
+            font-style: italic;
+            color: #007bff;
+        }
+    </style>
+    
+
         <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
@@ -97,25 +153,27 @@
                 </div>
 
                 <!-- Modal for Comments -->
-                <div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
-                    aria-labelledby="commentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="commentModalLabel">Komentar Laporan</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p id="commentContent">Loading...</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            </div>
-                        </div>
-                    </div>
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">Komentar Laporan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="commentContent" class="comment-section">
+                    <p class="text-center">Loading...</p>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
             </div>
         </div>
@@ -165,40 +223,48 @@
         </script>
         <script>
 
-            // Show Comments in Modal
-            function showCommentModal(id_laporan) {
-                const commentContent = document.getElementById('commentContent');
-                commentContent.innerHTML = "<p>Loading...</p>";
+ // Show Comments in Modal
+function showCommentModal(id_laporan) {
+    const commentContent = document.getElementById('commentContent');
+    commentContent.innerHTML = "<p class='text-center'>Loading...</p>";
 
-                fetch(`/laporan/komentar/${id_laporan}`)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch comments');
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        if (data && data.length > 0) {
-                            const commentsHtml = data.map((comment) => `
-                        <div class="comment">
-                            <p><strong>User ID:</strong> ${comment.nama_user}</p>
-                            <p>${comment.komentar}</p>
-                            <small class="text-muted">Timestamp: ${new Date(comment.timestamp).toLocaleString()}</small>
-                            <hr>
-                        </div>
-                    `).join('');
-                            commentContent.innerHTML = commentsHtml;
-                        } else {
-                            commentContent.innerHTML = '<p>Tidak ada komentar untuk laporan ini.</p>';
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error fetching comments:', error);
-                        commentContent.innerHTML = '<p>Error memuat komentar. Silakan coba lagi nanti.</p>';
-                    });
-
-                // Show the modal
-                $('#commentModal').modal('show');
+    fetch(`/laporan/komentar/${id_laporan}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch comments');
             }
+            return response.json();
+        })
+        .then((data) => {
+            if (data && data.length > 0) {
+                const commentsHtml = data.map((comment) => `
+                    <div class="comment">
+                        <div class="comment-header">
+                            <img src="https://www.gravatar.com/avatar/${md5(comment.email)}?d=identicon" alt="Avatar">
+                            <span class="comment-author">${comment.nama_user}</span>
+                        </div>
+                        <div class="comment-body">
+                            <p>${comment.komentar}</p>
+                        </div>
+                        <div class="comment-footer">
+                            <small>${new Date(comment.timestamp).toLocaleString()}</small>
+                        </div>
+                        <hr>
+                    </div>
+                `).join('');
+                commentContent.innerHTML = commentsHtml;
+            } else {
+                commentContent.innerHTML = '<p class="text-center">Tidak ada komentar untuk laporan ini.</p>';
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching comments:', error);
+            commentContent.innerHTML = '<p class="text-center text-danger">Error memuat komentar. Silakan coba lagi nanti.</p>';
+        });
+
+    // Show the modal
+    $('#commentModal').modal('show');
+}
+
         </script>
         <%- include('../partials/footer__') %>

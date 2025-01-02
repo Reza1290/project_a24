@@ -6,7 +6,7 @@ class modelProgram {
     return new Promise((resolve, reject) => {
       connection.query(
         "INSERT INTO program (id_sasaran, nama_program, indikator_program, satuan_program, target_program) VALUES (?, ?, ?, ?, ?)",
-        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program, target_program],
+        [data.id_sasaran, data.nama_program, data.indikator_program, data.satuan_program, data.target_program],
         function (err, result) {
           if (err) {
             reject(err);

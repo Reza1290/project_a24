@@ -173,6 +173,45 @@
             grid-template-columns: 1fr; /* 1 card per row for small screens */
         }
     }
+
+    /* Styling untuk tombol Lihat Data di sebelah kanan */
+    .btn-minimal {
+            padding: 8px 16px; /* Ukuran kecil tapi tetap nyaman */
+            font-size: 14px;   /* Font yang proporsional */
+            font-weight: 500;  /* Sedikit bold */
+            border: none;      /* Tanpa border untuk kesan modern */
+            border-radius: 5px; /* Sudut tumpul ringan */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Animasi halus */
+        }
+
+        .x_title {
+            display: flex;
+            justify-content: space-between; /* Membuat ruang antara elemen kiri dan kanan */
+            align-items: center; /* Vertikal align agar elemen rata tengah */
+        }
+
+        .btn-wrapper {
+            margin-left: auto; /* Memastikan tombol berada di sebelah kanan */
+        }
+
+        .btn-wrapper-lihatdata {
+            position: relative;
+            left: 345px; /* Tombol akan terletak di ujung kanan */
+            top: 10%; Menempatkan tombol di tengah vertikal */
+        }
+
+
+        /* Menjaga form-group agar tetap responsif pada layar kecil */
+        @media (max-width: 768px) {
+            .form-group.double-column {
+                flex-direction: column;
+            }
+
+            .form-group.double-column .col-md-6 {
+                width: 100%;
+            }
+        }
 </style>
 
 <!-- Page content -->
@@ -183,7 +222,7 @@
         </div>
         <div class="btn-wrapper-lihatdata">
             <button class="btn-minimal btn-info" onclick="window.location.href='/adminkabid/hasilinput'">
-                <i class="fa fa-folder-open"></i> Lihat Data Admin
+                <i class="fa fa-folder-open"></i> Lihat Data Admin Kabid
             </button>
         </div>
     </div>
