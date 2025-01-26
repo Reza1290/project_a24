@@ -49,20 +49,29 @@ router.get('/getSubKegiatan/:id_kegiatan', async (req, res) => {
 });
 
 router.get('/triwulan', async (req, res) => {
+    const { triwulan } = req.query;
 
     try {
+        
+        if(triwulan == null){
+           return res.redirect('triwulan?triwulan=1')
+        }
+        
+        const laporanData = await modelLaporan.getLaporanByTriwulan(triwulan);
 
-        // Render laporan page
         res.render('laporan/triwulan', {
-            user: req.user
+            user: req.user,
+            data: laporanData,
+            triwulan: triwulan ?? 1
         });
     } catch (error) {
         console.error('Error fetching triwulan report:', error);
         res.status(500).json({ error: 'Failed to fetch triwulan report' });
     }
 });
+
 router.get('/triwulan/download', async (req, res) => {
-    const { triwulan } = req.query; // Correctly destructure from req.query
+    const { triwulan } = req.query; 
 
     try {
         const laporanData = await modelLaporan.getLaporanByTriwulan(triwulan);
@@ -95,17 +104,18 @@ router.get('/triwulan/download', async (req, res) => {
 
 
 
+// Modify the existing endpoint to handle preview requests
 router.get('/bulanan', async (req, res) => {
-    const { filterBulan } = req.query;
+    const { filterBulan, preview } = req.query;
 
     try {
-        const kegiatan = await modelKegiatan.getAllKegiatan()
-        const sub_kegiatan = await modelSubKegiatan.getAllSubKegiatan()
+        const kegiatan = await modelKegiatan.getAllKegiatan();
+        const sub_kegiatan = await modelSubKegiatan.getAllSubKegiatan();
 
         // Fetch filtered data based on the query
-        let laporanData = []
-        if (!filterBulan) {
-            console.log(filterBulan)
+        let laporanData = [];
+        if (!filterBulan || filterBulan == 'all') {
+            console.log(filterBulan);
             laporanData = await modelLaporan.getAllLaporan();
         } else {
             laporanData = await modelLaporan.getLaporanByFilter(filterBulan);
@@ -113,11 +123,19 @@ router.get('/bulanan', async (req, res) => {
 
         if (!laporanData || laporanData.length === 0) {
             res.render('laporan/bulanan', { user: req.user, kegiatan: kegiatan, sub_kegiatan: sub_kegiatan, laporan: [] });
+            return;
+        }
+
+        // Check if the user requested a preview
+        if (preview === 'true') {
+            // Send JSON response for preview
+            res.json(laporanData); // Send the data as JSON to be displayed as a table in the frontend
+            return;
         }
 
         // Check if user requested a download
         if (req.query.download === 'true') {
-            const filePath = await exportToExcel(laporanData, `Laporan_Bulanan_${filter}`);
+            const filePath = await exportToExcel(laporanData, `Laporan_Bulanan_${filterBulan}`);
             return res.download(filePath); // Download the generated file
         }
 
@@ -128,6 +146,8 @@ router.get('/bulanan', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch monthly report' });
     }
 });
+
+
 
 // Route for downloading the filtered report
 router.get('/bulanan/download', async (req, res) => {

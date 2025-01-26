@@ -64,10 +64,25 @@ class modelLaporan {
     static async getAllLaporan() {
         return new Promise((resolve, reject) => {
             connection.query(
-                `SELECT lb.*, k.*, sk.*
-         FROM laporan_bulanan lb
-         LEFT JOIN kegiatan k ON lb.kegiatan_id = k.id_kegiatan
-         LEFT JOIN sub_kegiatan sk ON lb.sub_kegiatan_id = sk.id_sub_kegiatan`,
+                `SELECT 
+    lb.*, 
+    k.*, 
+    sk.*, 
+    p.*, 
+    s.*, 
+    k.target AS k_target, 
+    sk.target AS sk_target
+FROM 
+    laporan_bulanan lb 
+LEFT JOIN 
+    kegiatan k ON lb.kegiatan_id = k.id_kegiatan 
+LEFT JOIN 
+    sub_kegiatan sk ON lb.sub_kegiatan_id = sk.id_sub_kegiatan 
+LEFT JOIN 
+    program p ON k.id_program = p.id_program 
+LEFT JOIN 
+    sasaran s ON p.id_sasaran = s.id_sasaran
+WHERE 1`,
                 function (err, rows) {
                     if (err) {
                         reject(err);
@@ -228,6 +243,16 @@ WHERE
 
     static async getLaporanByTriwulan(triwulan) {
         return new Promise((resolve, reject) => {
+            const triwulanMapping = {
+                1: ['Januari', 'Februari', 'Maret'],      // Triwulan 1
+                2: ['April', 'Mei', 'Juni'],              // Triwulan 2
+                3: ['Juli', 'Agustus', 'September'],      // Triwulan 3
+                4: ['Oktober', 'November', 'Desember']    // Triwulan 4
+            };
+
+
+            const months = triwulanMapping[triwulan]; // Ensure this is an array of months
+            const placeholders = months.map((val) => `'${val}'`).join(', '); // Create placeholders for parameterized query
             const query = `
                 SELECT 
                     lb.*, 
@@ -248,19 +273,11 @@ WHERE
                 LEFT JOIN 
                     sasaran s ON p.id_sasaran = s.id_sasaran
                 WHERE 
-                    1
+                    lb.bulan IN (${placeholders})
             `;
 
             // Mapping triwulan (quarter) to months
-            const triwulanMapping = {
-                1: ['Januari', 'Februari', 'Maret'],      // Triwulan 1
-                2: ['April', 'Mei', 'Juni'],              // Triwulan 2
-                3: ['Juli', 'Agustus', 'September'],      // Triwulan 3
-                4: ['Oktober', 'November', 'Desember']    // Triwulan 4
-            };
 
-
-            const months = triwulanMapping[triwulan];
             console.log(triwulan)
             if (!months) {
                 return reject(new Error('Invalid triwulan'));

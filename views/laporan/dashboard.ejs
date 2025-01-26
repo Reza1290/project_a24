@@ -1,6 +1,95 @@
 <%- include('../partials/header__') %>
     <%- include('../partials/sidebar__') %>
 
+    <style>
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 8px;
+            border: 1px solid #f0e4d7;  /* Nude color */
+            background-color: #f9f7f2;  /* Light nude background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .modal-header {
+            background-color: #f0e4d7;  /* Nude color */
+            color: #333;
+            padding: 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            text-align: center;
+        }
+    
+        .modal-title {
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+    
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: #f9f7f2;  /* Light nude background */
+        }
+    
+        /* Comments Section */
+        .comment {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #e0d9c6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+    
+        .comment p {
+            font-size: 1rem;
+            color: #333;
+        }
+    
+        .comment strong {
+            color: #6c4f2e;  /* Darker nude tone */
+        }
+    
+        .comment small {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+    
+        /* Admin Comment Form */
+        #admin-comment-form h3 {
+            font-size: 1.1rem;
+            color: #6c4f2e;
+            margin-bottom: 15px;
+        }
+    
+        #admin-comment-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e0d9c6;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+            background-color: #f9f7f2;  /* Light nude background */
+        }
+    
+        #admin-comment-form button {
+            background-color: #6c4f2e;  /* Darker nude tone */
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    
+        #admin-comment-form button:hover {
+            background-color: #8e6a4b;
+        }
+    </style>
+    
+
         <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
@@ -63,19 +152,9 @@
                                                 </select>
                                             </div>
                                         </div>
+
+
                                         <div class="form-group row">
-                                            <label for="id_sub_kegiatan"
-                                                class="col-md-3 col-form-label text-right">Pilih Sub Kegiatan</label>
-                                            <div class="col-md-6">
-                                                <select id="id_sub_kegiatan" name="id_sub_kegiatan" class="form-control"
-                                                    required>
-                                                    <option value="">Pilih Sub Kegiatan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <!-- <div class="form-group row">
                                             <label for="id_sub_kegiatan"
                                                 class="col-md-3 col-form-label text-right">Pilih
                                                 Sub Kegiatan</label>
@@ -95,7 +174,7 @@
                                                                     <% } %>
                                                 </select>
                                             </div>
-                                        </div> -->
+                                        </div>
 
                                         <div class="form-group row">
                                             <label for="realisasi_kinerja"
@@ -219,10 +298,11 @@
                                                                 <%= laporan.satuan_realisasi_kinerja %>
                                                         </td>
                                                         <td>
-                                                            Rp. <%= laporan.anggaran_sub_kegiatan.toLocaleString('id-ID') %>
-                                                        </td>
-                                                        <td>Rp. <%= laporan.realisasi_anggaran.toLocaleString('id-ID') %>
-                                                        </td>
+                                                            Rp. <%= laporan.anggaran_sub_kegiatan ? laporan.anggaran_sub_kegiatan.toLocaleString('id-ID') : '0' %>
+                                                          </td>
+                                                          <td>
+                                                            Rp. <%= laporan.realisasi_anggaran ? laporan.realisasi_anggaran.toLocaleString('id-ID') : '0' %>
+                                                          </td>                                                          
                                                         <td>
 
                                                             <% if(user.user_type=='admin_kabid' ) { %>
@@ -279,14 +359,12 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
-                                        <p id="commentContent">Loading...</p>
+                                    <div class="modal-body" id="commentContent">
+                                        <p>Loading...</p>
                                     </div>
 
                                     <div class="modal-footer">
                                         <div id="komen"></div>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Tutup</button>
                                     </div>
                                 </div>
                             </div>
@@ -295,14 +373,11 @@
             </div>
         </div>
         <script>
-
-
-
             function showCommentModal(id_laporan, id_user, user_type) {
                 const commentContent = document.getElementById('commentContent');
-                const komen = document.getElementById('komen')
+                const komen = document.getElementById('komen');
                 commentContent.innerHTML = "<p>Loading...</p>";
-
+        
                 fetch(`/laporan/komentar/${id_laporan}`)
                     .then((response) => {
                         if (!response.ok) {
@@ -311,24 +386,24 @@
                         return response.json();
                     })
                     .then((data) => {
-
+        
                         if (user_type == 'admin_kabid') {
                             komen.innerHTML = `
-                            <div id="admin-comment-form">
-                                <h3>Add Comment</h3>
-                                <form id="add-comment-form" action="/laporan/komentar" method="post">
-                                    <textarea id="comment" name="komentar" required></textarea>
-                                    <input name="id_laporan_bulanan" value="${id_laporan}" style="display:none; visibility: hidden">
-                                    <input name="id_user" value="${id_user}" style="display:none; visibility: hidden">
-                                    
-                                    <button class="btn btn-primary" type="submit">Add Comment</button>
-                                </form>
-                            </div>
-                            `
+                                <div id="admin-comment-form">
+                                    <h3>Add Comment</h3>
+                                    <form id="add-comment-form" action="/laporan/komentar" method="post">
+                                        <textarea id="comment" name="komentar" required></textarea>
+                                        <input name="id_laporan_bulanan" value="${id_laporan}" style="display:none; visibility: hidden">
+                                        <input name="id_user" value="${id_user}" style="display:none; visibility: hidden">
+                                        
+                                        <button class="btn btn-primary" type="submit">Add Comment</button>
+                                    </form>
+                                </div>
+                            `;
                         } else {
-                            komen.innerHTML = ``
+                            komen.innerHTML = ``;
                         }
-
+        
                         if (data && data.length > 0) {
                             const commentsHtml = data
                                 .map(
@@ -339,11 +414,9 @@
                                         <small class="text-muted">Timestamp: ${new Date(comment.timestamp).toLocaleString()}</small>
                                         ${id_user == comment.id_user ? `
                                         <form action="/laporan/hapus-komentar" method="post">
-                                            <input name="id_user" value ="${id_user}" style="display:none">                                            
-                                            <input name="id_komentar_laporan" value ="${comment.id_komentar_laporan}" style="display:none">                                            
-                                            <button class="btn btn-xs btn-danger">hapus</button></form>
-                                            <hr>` : ``
-                                        }
+                                            <input name="id_user" value="${id_user}" style="display:none">
+                                            <input name="id_komentar_laporan" value="${comment.id_komentar_laporan}" style="display:none">
+                                            <button class="btn btn-xs btn-danger">hapus</button></form><hr>` : ``}
                                     </div>
                                     `
                                 )
@@ -357,12 +430,10 @@
                         console.error('Error fetching comments:', error);
                         commentContent.innerHTML = '<p>Error loading comments. Please try again later.</p>';
                     });
-
+        
                 // Show the modal
                 $('#commentModal').modal('show');
             }
-
-
         </script>
         <script>
             document.getElementById('id_kegiatan').addEventListener('change', function () {
